@@ -1,4 +1,4 @@
-export { removeDuplicates, match, which, rank, rin, union, align_vals as default};
+export { removeDuplicates, match, which, rank, rin } ;
 
 let uniqueArr = []
 function removeDuplicates(arr) {
@@ -15,7 +15,7 @@ function removeDuplicates(arr) {
   return uniqueArr
 }
 
-export function match(arr1, arr2, nomatch) {
+function match(arr1, arr2, nomatch) {
   // Match arr1 and arr2 value, like ismember() in matlab.
   return Array.from(arr1, (d) =>  { 
     let idx_arr1_from_arr2 = arr2.indexOf(d)
@@ -23,7 +23,7 @@ export function match(arr1, arr2, nomatch) {
   } )
 }
 
-export function which(x) {
+function which(x) {
   // Which indices are TRUE?
   // Description:
   //   Give the ‘TRUE’ indices of a logical object, allowing for array indices.
@@ -35,7 +35,7 @@ export function which(x) {
     )
 }
 
-export function rank(arr) {
+function rank(arr) {
   // Rank with respect to size, no reverse option.
   // Arguments:
   //   arr: an array.
@@ -44,14 +44,14 @@ export function rank(arr) {
   return ranks
 }
 
-export function rin(arr1, arr2) {
+function rin(arr1, arr2) {
   // Find element arr1 presents in arr2, i.e. arr1 %in% arr2
   return Array.from(arr1, (x) => {
     return _.includes(arr2, x)
   })
 }
 
-export function union(x, y) {
+function union(x, y) {
   // Union of two arrays.
   // Return an array
   let a = new Set(x);
