@@ -1,4 +1,5 @@
 export { match, rin, sum, removeDuplicates, tiedrank, which } ;
+import { includes } from 'lodash';
 
 function match(arr1, arr2, nomatch) {
   // Match arr1 and arr2 value, like ismember() in matlab.
@@ -52,20 +53,10 @@ function tiedrank(arr) {
 function rin(arr1, arr2) {
   // Find element arr1 presents in arr2, i.e. arr1 %in% arr2
   return Array.from(arr1, (x) => {
-    return _.includes(arr2, x)
+    return includes(arr2, x)
   })
 }
 
 function sum(arr) {
   return arr.reduce((partialSum, a) => partialSum + a, 0);
 }
-
-function union(x, y) {
-  // Union of two arrays.
-  // Return an array
-  let a = new Set(x);
-  let b = new Set(y);
-  return Array.from(new Set([...a, ...b])); 
-}
-
-

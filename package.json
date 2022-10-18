@@ -1,6 +1,6 @@
 {
   "name": "allotaxonometer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "esbuild": "^0.15.10",
+    "lodash": "^4.17.21",
     "mocha": "^10.0.0"
   },
   "devDependencies": {
