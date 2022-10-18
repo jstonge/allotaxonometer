@@ -37,6 +37,14 @@ function removeDuplicates(arr) {
 
 function tiedrank(arr) {
   // tiedrank(X) computes the ranks of the values in the vector X. If any X values are tied, tiedrank computes their average rank. Same as in matlab.
+  function getIndex(arr, val) {
+    var indexes = [], i;
+    for(i = 0; i < arr.length; i++)
+        if (arr[i] === val)
+           indexes.push(i+1);
+    return indexes.reduce((a, b) => a + b) / indexes.length;
+  }
+  
   const sorted = arr.slice().sort((a, b) => b - a)
   return arr.map(e => getIndex(sorted, e))
 }
