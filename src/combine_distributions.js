@@ -51,4 +51,15 @@ export default class mixedElems {
     }
     return mixedelem
   }
+
+  // tidy_count_mixedelem(mixedelements, alpha = Inf) {
+  //   y1 = null
+  //   dc = diamond_counts(mixedelements, alpha)
+  //   counts_t = data.table::data.table(t(dc$counts))
+  //   counts_t[, ("x1") := 1:nrow(counts_t)]
+  //   counts_long = data.table::melt(counts_t, id.vars = "x1", variable.name = "y1")
+  //   counts_long$y1 = as.integer(gsub("V", "", y1))
+  //   return([counts_long=counts_long, divergence_score=dc$div_score, 
+  //               deltas=dc$deltas, max_delta_loss=dc$max_delta_loss])
+  // }
 }

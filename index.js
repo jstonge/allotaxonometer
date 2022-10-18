@@ -1,10 +1,12 @@
-import {removeDuplicates, which, rin, rank, union} from './src/utils_helpers'
+import { match, rin, sum, removeDuplicates, tiedrank, which } from './src/utils_helpers'
 import combine_distributions from './src/combine_distributions'
 
 export{
+  match,
   removeDuplicates,
   which,
   rin,
-  rank,
+  tiedrank,
+  sum,
   combine_distributions
 }

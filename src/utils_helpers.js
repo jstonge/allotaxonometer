@@ -1,19 +1,4 @@
-export { removeDuplicates, match, which, rank, rin } ;
-
-let uniqueArr = []
-function removeDuplicates(arr) {
-
-  // Accepts an array from which the duplicates
-  // will be removed
-  if (!Array.isArray(arr)){
-    arr = []
-  }
-
-  let theSet = new Set(arr)
-  let uniqueArr = [...theSet]
-
-  return uniqueArr
-}
+export { match, rin, sum, removeDuplicates, tiedrank, which } ;
 
 function match(arr1, arr2, nomatch) {
   // Match arr1 and arr2 value, like ismember() in matlab.
@@ -35,13 +20,25 @@ function which(x) {
     )
 }
 
-function rank(arr) {
-  // Rank with respect to size, no reverse option.
-  // Arguments:
-  //   arr: an array.
+let uniqueArr = []
+function removeDuplicates(arr) {
+
+  // Accepts an array from which the duplicates
+  // will be removed
+  if (!Array.isArray(arr)){
+    arr = []
+  }
+
+  let theSet = new Set(arr)
+  let uniqueArr = [...theSet]
+
+  return uniqueArr
+}
+
+function tiedrank(arr) {
+  // tiedrank(X) computes the ranks of the values in the vector X. If any X values are tied, tiedrank computes their average rank. Same as in matlab.
   const sorted = arr.slice().sort((a, b) => b - a)
-  const ranks = arr.map(v => sorted.indexOf(v) + 1);
-  return ranks
+  return arr.map(e => getIndex(sorted, e))
 }
 
 function rin(arr1, arr2) {
@@ -49,6 +46,10 @@ function rin(arr1, arr2) {
   return Array.from(arr1, (x) => {
     return _.includes(arr2, x)
   })
+}
+
+function sum(arr) {
+  return arr.reduce((partialSum, a) => partialSum + a, 0);
 }
 
 function union(x, y) {
