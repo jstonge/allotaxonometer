@@ -18,7 +18,6 @@ function diamond_counts(mixedelements, alpha) {
   mixedelements[0]['ranks']  =  indices_deltas.map(i => mixedelements[0]['ranks'][i])
   mixedelements[0]['probs'] =  indices_deltas.map(i => mixedelements[0]['probs'][i])
   
-  
   mixedelements[1]['types']  =  indices_deltas.map(i => mixedelements[1]['types'][i])
   mixedelements[1]['counts']  =  indices_deltas.map(i => mixedelements[1]['counts'][i])
   mixedelements[1]['ranks']  =  indices_deltas.map(i => mixedelements[1]['ranks'][i])
@@ -37,6 +36,7 @@ function diamond_counts(mixedelements, alpha) {
   const minlog10 = 0 // always for ranks
   let maxlog10 = rank_maxlog10(mixedelements)
 
+
   // for too small data sets
   if (maxlog10 < 1) {
     maxlog10 = 1
@@ -54,8 +54,9 @@ function diamond_counts(mixedelements, alpha) {
     ++counts[x1_indices[i]][x2_indices[i]]
   }
 
-  return({'counts':counts, 'div_score': divergence_score, 'deltas':deltas, 'max_delta_loss': Math.max(...deltas_loss)})
+  return({'counts': counts, 'div_score': divergence_score, 'deltas':deltas, 'max_delta_loss': Math.max(...deltas_loss)})
 }
+
 
 function tidy_count_mixedelem(mixedelements, alpha) {
   const dc = diamond_counts(mixedelements, alpha)

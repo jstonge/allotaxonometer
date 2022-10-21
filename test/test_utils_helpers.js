@@ -43,7 +43,7 @@ describe('suite of utility functions inside matlab_sort', function () {
       });
     it('should return original index', function () {
         let myNums = [5, 4, 1, 2, 3];
-        assert.deepEqual([3,4,5,2,1], sort(myNums, false)['orig_idx']);
+        assert.deepEqual([2,3,4,1,0], sort(myNums, false)['orig_idx']);
       });
   });
 })

@@ -18,10 +18,19 @@ function matlab_sort(A, rev) {
   // Returns both the sorted vector `v` and the original indices.
   //
   // examples 
-  // A <- c(5, 4, 1, 2, 3)
-  // ([1, 2, 3, 4, 5], [3, 4, 5, 2, 1])
+  // A = [5, 4, 1, 2, 3]
+  // ([1, 2, 3, 3, 4, 5], [3, 4, 5, 6, 2, 1])
+  
   let sorted = rev ? A.slice().sort((a, b) => b - a) : A.slice().sort((a, b) => a - b)
-  return {'value': sorted, 'orig_idx': sorted.map(e => A.indexOf(e)+1)}
+
+  const A_cp = A.slice()
+  const orig_idx = []
+  for (let i = 0; i < A.length; ++i) {
+    orig_idx.push(A_cp.indexOf(sorted[i]))
+    delete A_cp[A_cp.indexOf(sorted[i])]
+  }
+  
+  return {'value': sorted, 'orig_idx': orig_idx}
 }
 
 function removeDuplicates(arr) {
