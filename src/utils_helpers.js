@@ -1,13 +1,5 @@
-export { match, matlab_sort, rin, sum, removeDuplicates, rank_maxlog10, tiedrank, which } ;
+export { matlab_sort, rin, sum, removeDuplicates, rank_maxlog10, tiedrank, which, zeros } ;
 import { includes } from 'lodash';
-
-function match(arr1, arr2, nomatch) {
-  // Match arr1 and arr2 value, like ismember() in matlab.
-  return Array.from(arr1, (d) =>  { 
-    let idx_arr1_from_arr2 = arr2.indexOf(d)
-    return idx_arr1_from_arr2 != -1 ? idx_arr1_from_arr2 : nomatch
-  } )
-}
 
 function which(x) {
   // Which indices are TRUE?
@@ -77,4 +69,19 @@ function rin(arr1, arr2) {
 
 function sum(arr) {
   return arr.reduce((partialSum, a) => partialSum + a, 0);
+}
+
+function zeros(length){
+  // Create array of all zeros. Similar to matlab.
+  function createArray(length) {
+    var arr = new Array(length || 0),
+        i = length;
+    if (arguments.length > 1) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        while(i--) arr[length-1 - i] = createArray.apply(this, args);
+    }
+    return arr;
+  }
+  let empty_mat = createArray(length,length)
+  return Array.from(empty_mat, arr => arr.fill(0))
 }

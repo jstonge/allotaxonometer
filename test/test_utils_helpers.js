@@ -1,11 +1,12 @@
 'use strict'
 
 var assert = require('chai').assert;
-const rmDups = require("../src/utils_helpers").removeDuplicates;
-const rank = require("../src/utils_helpers").tiedrank;
-const rin = require("../src/utils_helpers").rin;
-const sort = require("../src/utils_helpers").matlab_sort;
-
+import { 
+  removeDuplicates as rmDups, 
+  tiedrank as rank, 
+  rin as rin, 
+  matlab_sort as sort
+ } from "../src/utils_helpers.js";
 
 describe('suite of utility functions inside removeDuplicates', function () {
   describe('removing array duplicates', function () {

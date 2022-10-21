@@ -1,4 +1,7 @@
-export default class mixedElems {
+export { mixedElems };
+import { tiedrank } from './utils_helpers.js';
+
+class mixedElems {
   constructor(elem1, elem2) {
     this.elem1 = elem1;
     this.elem2 = elem2;
@@ -25,10 +28,10 @@ export default class mixedElems {
     return [this.elem1, this.elem2]
   }
 
-  alignVals(elem, idx, new_idx, col) {
-  // We want the following mapping: new_idx[i]=7 => idx[7]=10 => elem[10][col]
-  return Array.from(idx, (d,i) => {
-      return new_idx[i] === undefined ?  0 : elem[idx[new_idx[i]]][col]
+  alignVals(elem, enumlist, col) {
+    return Array.from(elem['types'], type => {
+      let idx_type_enumlist_in_elem = enumlist.map(d => d.types).indexOf(type)
+      return idx_type_enumlist_in_elem === -1 ? 0 : enumlist[idx_type_enumlist_in_elem][col]
     })
   }
   
@@ -37,17 +40,11 @@ export default class mixedElems {
     const enum_list = this.buildEnumList()
     
     for (let j=0; j < enum_list.length; j++) {
-      // Where do types in system 1 ends up in system 2? e.g. James went 1 -> 18.
-      const indices = match(mixedelem[j]["types"],  enum_list[j].map(d => d.types), 0)
-      // Indices of types in mixed elem found exclusively in one of the 2 sets, e.g.
-      // James is found and is now index=1 
-      const new_indices = which(rin(mixedelem[j]["types"], enum_list[j].map(d=>d.types)))
-      
       // Tricky part: 
-      mixedelem[j]['counts']      = this.alignVals(enum_list[j], indices, new_indices, 'counts')
-      mixedelem[j]['ranks']       = rank(mixedelem[j]['counts'])
-      mixedelem[j]['probs']       = this.alignVals(enum_list[j], indices, new_indices, 'probs')
-      mixedelem[j]['totalunique'] = this.alignVals(enum_list[j], indices, new_indices, 'totalunique')
+      mixedelem[j]['counts']      = this.alignVals(mixedelem[j], enum_list[j], 'counts')
+      mixedelem[j]['ranks']       = tiedrank(mixedelem[j]['counts'])
+      mixedelem[j]['probs']       = this.alignVals(mixedelem[j], enum_list[j], 'probs')
+      mixedelem[j]['totalunique'] = this.unionLength()
     }
     return mixedelem
   }
