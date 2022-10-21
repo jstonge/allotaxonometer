@@ -1,4 +1,4 @@
-export { match, rin, sum, removeDuplicates, tiedrank, which } ;
+export { match, matlab_sort, rin, sum, removeDuplicates, rank_maxlog10, tiedrank, which } ;
 import { includes } from 'lodash';
 
 function match(arr1, arr2, nomatch) {
@@ -21,9 +21,19 @@ function which(x) {
     )
 }
 
-let uniqueArr = []
-function removeDuplicates(arr) {
+function matlab_sort(A, rev) {
+  // Inspired by matlab, this functions keep track of the original indices of an array after sorting.
+  // Returns both the sorted vector `v` and the original indices.
+  //
+  // examples 
+  // A <- c(5, 4, 1, 2, 3)
+  // ([1, 2, 3, 4, 5], [3, 4, 5, 2, 1])
+  let sorted = rev ? A.slice().sort((a, b) => b - a) : A.slice().sort((a, b) => a - b)
+  return {'value': sorted, 'orig_idx': sorted.map(e => A.indexOf(e)+1)}
+}
 
+function removeDuplicates(arr) {
+  
   // Accepts an array from which the duplicates
   // will be removed
   if (!Array.isArray(arr)){
@@ -48,6 +58,14 @@ function tiedrank(arr) {
   
   const sorted = arr.slice().sort((a, b) => b - a)
   return arr.map(e => getIndex(sorted, e))
+}
+
+function rank_maxlog10(mixedelements) {
+  // Get maximum of log10 ranks from both systems, then round up
+  let logged_max = [
+    Math.max(...mixedelements[[0]].ranks), Math.max(...mixedelements[[1]].ranks)
+  ].map(Math.log10)
+  return Math.ceil(Math.max(...[logged_max[0], logged_max[1]]))
 }
 
 function rin(arr1, arr2) {

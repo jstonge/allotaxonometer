@@ -4,6 +4,7 @@ var assert = require('chai').assert;
 const rmDups = require("../src/utils_helpers").removeDuplicates;
 const rank = require("../src/utils_helpers").tiedrank;
 const rin = require("../src/utils_helpers").rin;
+const sort = require("../src/utils_helpers").matlab_sort;
 
 
 describe('suite of utility functions inside removeDuplicates', function () {
@@ -24,7 +25,7 @@ describe('suite of utility functions inside tiedrank', function () {
   });
 })
 
-describe('suite of utility functions inside in', function () {
+describe('suite of utility functions inside rin', function () {
   describe('Find element arr1 presents in arr2, i.e. arr1 %in% arr2', function () {
     it('should return boolean when found', function () {
         let myNames = ['John', 'Williams', 'James', 'Jesus'];
@@ -32,3 +33,17 @@ describe('suite of utility functions inside in', function () {
       });
   });
 })
+
+describe('suite of utility functions inside matlab_sort', function () {
+  describe('Keep track of the original indices of an array after sorting', function () {
+    it('should return ordered list', function () {
+        let myNums = [5, 4, 1, 2, 3];
+        assert.deepEqual([1,2,3,4,5], sort(myNums, false)['value']);
+      });
+    it('should return original index', function () {
+        let myNums = [5, 4, 1, 2, 3];
+        assert.deepEqual([3,4,5,2,1], sort(myNums, false)['orig_idx']);
+      });
+  });
+})
+
