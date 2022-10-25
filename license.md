@@ -1,6 +1,7 @@
 MIT License
 
-Copyright (c) 2022 Jonathan St-Onge
+Copyright (c) 2022 Jonathan St-Onge, Samuel Roseblatt, Carter Ward
+Copyright (c) 2015 Peter Sheridan Dodds
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
