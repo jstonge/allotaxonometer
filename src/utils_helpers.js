@@ -1,5 +1,4 @@
 export { matlab_sort, rin, sum, removeDuplicates, rank_maxlog10, tiedrank, which, zeros } ;
-import { includes } from 'lodash';
 
 function which(x) {
   // Which indices are TRUE?
@@ -71,8 +70,14 @@ function rank_maxlog10(mixedelements) {
 
 function rin(arr1, arr2) {
   // Find element arr1 presents in arr2, i.e. arr1 %in% arr2
+  //
+  // examples
+  // A = ["bob", "george", "jesus"]
+  // B = ["bob", "jesus", "terrence"]
+  // rin(A, B)
+  // [true, false, true]
   return Array.from(arr1, (x) => {
-    return includes(arr2, x)
+    return arr2.indexOf(x) == -1 ? false : true
   })
 }
 
@@ -94,3 +99,4 @@ function zeros(length){
   let empty_mat = createArray(length,length)
   return Array.from(empty_mat, arr => arr.fill(0))
 }
+
