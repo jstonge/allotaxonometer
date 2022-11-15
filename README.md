@@ -8,7 +8,7 @@ The primary purpose of the alloxonometer in general is to calculate and visualiz
 
 ## Twitter data
 
-We access the Twitter data from the Comptuational Story Lab [storywrangling](https://gitlab.com/compstorylab/storywrangling)' API. Unfortunately, the API only work when you are connected on the University of Vermont's VPN. Follow the instructions [here](https://www.uvm.edu/it/kb/article/install-cisco-vpn/ to get the VPN working. Once this is done, run the following lines from the command line:
+We access the Twitter data from the Comptuational Story Lab [storywrangling](https://gitlab.com/compstorylab/storywrangling)' API. Unfortunately, the API only work when you are connected on the University of Vermont's VPN. Follow the instructions [here](https://www.uvm.edu/it/kb/article/install-cisco-vpn/) to get the VPN working. Once this is done, run the following lines from the command line:
 
 ```shell
 git clone https://gitlab.com/compstorylab/storywrangling.git
