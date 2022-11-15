@@ -24,9 +24,8 @@ from datetime import datetime
 import json
 from pathlib import Path
 
-storywrangler = Storywrangler()
-
 def get_ngram(yr, month, day, fname=False):
+    storywrangler = Storywrangler()
     ngram_zipf = storywrangler.get_zipf_dist(
         date=datetime(yr, month, day),
         lang="en", ngrams="1grams",
@@ -37,10 +36,11 @@ def get_ngram(yr, month, day, fname=False):
         "rank":"rank", "rank_no_rt":"rank_no_rt", "freq":"probs", "freq_no_rt":"probs_no_rt"
         })\
      .dropna()\
-     .loc[:, ["types", "counts", "probs"]]\
-     .to_dict(orient='index')
+     .assign(totalunique = lambda x: x.shape[0])\
+     .loc[:, ["types", "counts", "totalunique", "probs"]]\
+     .to_dict(orient="index")
 
-    ngram_zipf = { f"{yr}_{month}_{day}": ngram_zipf }
+    ngram_zipf = { f"{yr}_{month}_{day}": [_ for _ in ngram_zipf.values()] }
 
     if fname:
         if Path(fname).exists():
