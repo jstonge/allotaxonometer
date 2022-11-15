@@ -4,7 +4,7 @@ The primary purpose of the alloxonometer in general is to calculate and visualiz
 
 ## Babynames data
 
-
+The original babyname dataset for boys and girls can be found on the [catalog.data.gov](https://catalog.data.gov/dataset?tags=baby-names) website. We keep the version used in the `observable` version in `data/`. The original dataset includes each year from 1880–2018, which have 5 or more applications.
 
 ## Twitter data
 
