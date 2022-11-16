@@ -59,8 +59,9 @@ Note that this solution is a bit clunky. At some point we would prefer to have a
 
 ## Species Abundance Data
 
-We access the species abundance data from https://datadryad.org/stash/dataset/doi:10.15146/5xcp-0d46, downloading the full dataset, unzipping it, and then loading bci.tree<i>.rdata for i in (1-8), as well as bci.spptable.rdata. We then run the following code to subset the full census represented by each of the bci.tree<i>.rdata to get the counts of the species of the trees alive during that census, combine merge that with the species name database to get the full name, and then put it in the format that our allotaxonometer code expects:
+We access the species abundance data from https://datadryad.org/stash/dataset/doi:10.15146/5xcp-0d46, downloading the full dataset, unzipping it, and then loading bci.tree\<i\>.rdata for i in (1-8), as well as bci.spptable.rdata. We then run the following code to subset the full census represented by each of the bci.tree\<i\>.rdata to get the counts of the species of the trees alive during that census, combine merge that with the species name database to get the full name, and then put it in the format that our allotaxonometer code expects:
 
+```r    
 library(Sys)
 library(dplyr)
 library("rlist")
@@ -89,3 +90,4 @@ names(tree_data) <- c("1981-1983", "1985", "1991-1992", "1995-1996", "2000-2001"
 
 exportJson <- toJSON(tree_data)
 write(exportJson, "tree_species_counts.json")
+```
