@@ -1,4 +1,4 @@
-export { matlab_sort, rin, sum, removeDuplicates, rank_maxlog10, tiedrank, which, zeros } ;
+export { dot, matlab_sort, rin, sum, removeDuplicates, rank_maxlog10, tiedrank, which, zeros } ;
 
 function which(x) {
   // Which indices are TRUE?
@@ -10,6 +10,10 @@ function which(x) {
       (out, bool, index) => bool ? out.concat(index) : out, 
       []
     )
+}
+
+function dot(a, b) { 
+  return a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n); 
 }
 
 function matlab_sort(A, rev) {

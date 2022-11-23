@@ -1,5 +1,5 @@
 export { diamond };
-import { rank_maxlog10, matlab_sort, sum, which, rin } from "./utils_helpers";
+import { rank_maxlog10, matlab_sort, sum, which, rin, dot } from "./utils_helpers";
 import { group, extent } from 'd3-array';
 import rank_turbulence_divergence from "./rank_turbulence_divergence";
 import structuredClone from '@ungap/structured-clone';
@@ -66,9 +66,17 @@ function diamond_counts(mixedelements) {
   const agg_dat = group(out, d => `${d.x1}, ${d.y1}`)
 
   return Array.from(agg_dat , ([ key, value ]) => {
+    const y1 = +key.split(", ")[0]
+    const x1 = +key.split(", ")[1]
+    const v_bar = [y1-x1, y1-x1]
+    const w_bar = [x1-x1, y1-x1]
+    
     return {
-      y1: +key.split(", ")[0],
-      x1: +key.split(", ")[1],
+      // y1: +key.split(", ")[0],
+      // x1: +key.split(", ")[1],
+      x1: x1,
+      y1: y1,
+      cos_dist: dot(v_bar, w_bar),
       rank: value.map(d => d.types)[0] === ""   ? "" : value.map(d => `(${d.rank1}, ${d.rank2})`)[0],
       rank_L: value.map(d => d.types)[0] === "" ? "" : extent(value.map(d => d.rank1)),
       rank_R: value.map(d => d.types)[0] === "" ? "" : extent(value.map(d => d.rank2)),

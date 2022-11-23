@@ -12,23 +12,14 @@ describe('suite of utility functions inside diamond counts', function () {
   const mixed_elem_test = me_class_test.combElems();
   describe('counts for diamond plot', function () {
     const dc = diamond(mixed_elem_test, Infinity)
-    console.log(dc)
+
     it('should return the same div_score', function () {
         assert.deepEqual(0.3822, +(dc.div_score).toFixed(7));
       });
 
-      // it('should return the same row count', function () {
-      //   assert.deepEqual(62, sum(dc.counts[39]));
+      // it('should return 4', function () {
+        // assert.deepEqual(62, sum(dc.counts[39]));
       // });
   });
-
-  // describe('counts for tidy diamond plot', function () {
-  //   const tcm = tidy_count_mixedelem(mixed_elem_test, Infinity)
-    
-  //   it('should return the same div_score', function () {
-  //       assert.deepEqual(1292, sum(tcm.counts_long.map(d => d.value)));
-  //     });
-
-  // });
 })
 
