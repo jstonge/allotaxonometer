@@ -4,7 +4,31 @@ The primary purpose of the alloxonometer in general is to calculate and visualiz
 
 ## Babynames data
 
-The original babyname dataset for boys and girls can be found on the [catalog.data.gov](https://catalog.data.gov/dataset?tags=baby-names) website. We keep the version used in the `observable` version in `data/`. The original dataset includes each year from 1880–2018, which have 5 or more applications.
+The original babyname dataset for boys and girls can be found on the [catalog.data.gov](https://catalog.data.gov/dataset?tags=baby-names) website. But we use the dataset [here](http://pdodds.w3.uvm.edu/permanent-share/pocs-babynames.zip) to replicate the original paper. You can find a 5-years aggregated version used in the `Observable` version in `data/`. The original dataset includes each year from 1880–2018, which have 5 or more applications. You can convert the original folder into the formatted `.json` file using R with the following command:
+
+```R
+read_and_write_babyname_dat <- function(fname, gender) {
+  d <- readr::read_csv(fname, 
+                       col_names = c("types", "gender", "counts"), 
+                       col_select = c("types", "counts"),
+                       col_types = c("c", "i"))
+  
+  d$probs <- d$counts / sum(d$counts)
+  d$total_unique <- nrow(d)
+  return(d)
+}
+# You need to be in the folder above `data/`, which is the unzip folder contained in 
+# http://pdodds.w3.uvm.edu/permanent-share/pocs-babynames.zip
+purrr::map(
+  list.files("data/", pattern = "names-boys*"), 
+  ~read_and_write_babyname_dat(paste("data", .x, sep = "/"), "boys")
+)
+
+purrr::map(
+  list.files("data/", pattern = "names-girls*"), 
+  ~read_and_write_babyname_dat(paste("data", .x, sep = "/"), "girls")
+)
+```
 
 ## Twitter data
 
