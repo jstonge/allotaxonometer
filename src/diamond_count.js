@@ -86,7 +86,7 @@ function diamond_counts(mixedelements) {
 
 function diamond(mixedelements, alpha) {
   
-  let rank_turbulence = rank_turbulence_divergence(mixedelements, alpha)
+  #let rank_turbulence = rank_turbulence_divergence(mixedelements, alpha)
   let deltas = rank_turbulence.divergence_elements
   let divergence_score = sum(deltas)
   let sorted_div = matlab_sort(deltas, true)
