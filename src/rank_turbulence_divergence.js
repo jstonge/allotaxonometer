@@ -62,7 +62,7 @@ export default function rank_turbulence_divergence(mixedelements, alpha) {
   const normalization = norm_divElems(mixedelements, inv_r1, inv_r2, alpha)
   
   return {
-    'divergence_elements': divergence_elements.map(d => +(d / normalization).toFixed(4)), 
+    'divergence_elements': divergence_elements.map(d => d / normalization), 
     'normalization': normalization
   }
 }
