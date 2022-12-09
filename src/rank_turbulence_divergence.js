@@ -61,7 +61,14 @@ export default function rank_turbulence_divergence(mixedelements, alpha) {
   const divergence_elements = divElems(inv_r1, inv_r2, alpha)
   const normalization = norm_divElems(mixedelements, inv_r1, inv_r2, alpha)
   
-  return {
+  return { // the divergence used to wordshift dat to sort name in wordshift plot
+         // is equal to the formula in the upperleft of the diamond plot. However
+         // the formula is a proportionality and miss the normalization constant 
+         // shown here. 
+         // Example: for alpha = infinity, for the rank 1 names on both systems, the formula as written is equal to max(1/1, 1/former_rank) = 1/1 =1
+         // this value of 1 is then divided by the normalization constant.
+         // this constant of proportionality is the reason for the difference between the 1/1 that the written formula gives you
+         // and the decimal value that wordshift_dat states and which is actuallly used to sort the types.
     'divergence_elements': divergence_elements.map(d => d / normalization), 
     'normalization': normalization
   }
