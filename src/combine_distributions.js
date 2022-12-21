@@ -9,56 +9,61 @@ import diamond from './diamond_count.js'
 // data in the form we might need for the different
 // allotaxonometer plots.
 export default class mixedElems {
-  
+
+// Constructor function to initialize class variables and run combElems function
   constructor(elem1, elem2) {
-    this.elem1 = elem1;
-    this.elem2 = elem2;
-    this.me = this.combElems()
+    this.elem1 = elem1; // first element
+    this.elem2 = elem2; // second element
+    this.me = this.combElems() // run combElems function and store result in me
   }
 
-  // Takes arrays, returns a Set object
+ // Takes arrays, returns a Set object containing the union of both arrays
   getUnions(x,y) {
-    let a = new Set(x);
-    let b = new Set(y);
-    return new Set([...a, ...b]);
+    let a = new Set(x); // convert array x to a Set object
+    let b = new Set(y); // convert array y to a Set object
+    return new Set([...a, ...b]); // return a new Set object containing the union of a and b
   }
   
   // Takes arrays, returns a Set object
   setdiff(x,y) {
-    let a = new Set(x);
-    let b = new Set(y);
-    return new Set(
+    let a = new Set(x); // convert array x to a Set object
+    let b = new Set(y); // convert array y to a Set object
+    // return a new Set object containing elements in a that are not present in b
+    return new Set(       
       [...a].filter(x => !b.has(x)));
   } 
-
+  
+ // Builds a mixed element array containing the union of types in elem1 and elem2
   buildMixedElems() {
     const mixedelem = [[], []]
-    const x = this.elem1.map(d=>d.types)
-    const y = this.elem2.map(d=>d.types)
-    const union = Array.from(this.getUnions(x,y))
-    mixedelem[0]['types'] = union; 
-    mixedelem[1]['types'] = union;
-    return mixedelem
+    const x = this.elem1.map(d=>d.types)  // extract types from elem1
+    const y = this.elem2.map(d=>d.types) // extract types from elem
+    const union = Array.from(this.getUnions(x,y)) // get the union of x and y
+    mixedelem[0]['types'] = union; // store union in mixedelem array for elem1
+    mixedelem[1]['types'] = union; // store union in mixedelem array for elem2
+    return mixedelem // return mixedelem array
   }
   
+    // Combine elements and return a combined array containing counts, ranks, probs, and totalunique
   combElems() {
-    const mixedelem = this.buildMixedElems() 
-    const enum_list = [this.elem1, this.elem2]
+    const mixedelem = this.buildMixedElems()  // build mixed elements array
+    const enum_list = [this.elem1, this.elem2] // list containing elem1 and elem2
 
     for (let j=0; j < enum_list.length; j++) {
-      const enumlist_types = enum_list[j].map(d => d.types)
-      const counts = new Array(mixedelem[j]['types'].length)
-      const probs = new Array(mixedelem[j]['types'].length)
+      const enumlist_types = enum_list[j].map(d => d.types) // extract types from enum_list[j]
+      const counts = new Array(mixedelem[j]['types'].length) // initialize counts array
+      const probs = new Array(mixedelem[j]['types'].length)  // initialize probs array
 
+     
       // for each index in mixed elem[j], which is the union of both systems
-      for (let i=0; i < mixedelem[j]['types'].length; i++) {
+      for (let i=0; i < mixedelem[j]['types'].length; i++) {  // find the index of type mixedelem[j]['types'][i] in system 1 or 2
         // find the index of type mixedelem[j]['types'][i] in system 1 or 2
         let idx_type_enumlist_in_elem = enumlist_types.indexOf(mixedelem[j]['types'][i])
         // if it exists, grabs counts and probs information else put a 0.
         counts[i] = idx_type_enumlist_in_elem === -1 ? 0 : enum_list[j][idx_type_enumlist_in_elem]["counts"]
         probs[i]  = idx_type_enumlist_in_elem === -1 ? 0 : enum_list[j][idx_type_enumlist_in_elem]["probs"]
       }
-      
+    // store counts, ranks, probs, and totalunique in mixedelem array for elem1 or elem2   
       mixedelem[j]['counts']      = counts
       mixedelem[j]['ranks']       = tiedrank(mixedelem[j]['counts'])
       mixedelem[j]['probs']       = probs
@@ -66,7 +71,7 @@ export default class mixedElems {
  
     }
 
-    return mixedelem
+    return mixedelem  // return mixedelem array
   }
 
   // Add all the different wordshift metrics here.
