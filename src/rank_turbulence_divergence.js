@@ -2,6 +2,14 @@ import { sum } from "https://cdn.skypack.dev/d3-array@3";
 
 import { which } from "./utils_helpers.js";
 
+// This function calculates the divergence between two arrays of inverse ranks
+// based on the specified alpha value. If alpha is equal to infinity, it returns
+// an array with the maximum of each element in inv_r1 and inv_r2. If alpha is
+// equal to 0, it returns an array with the log of the ratio of the maximum and
+// minimum of 1/inv_r1 and 1/inv_r2 for each element. Otherwise, it returns an
+// array with the absolute value of (alpha + 1)/alpha * (inv_r1^alpha - inv_r2^alpha)^(1/(alpha + 1))
+// for each element.
+
 function divElems(inv_r1, inv_r2, alpha) {
   if (alpha === Infinity) {
       return inv_r1.map((d,i) => inv_r1[i] == inv_r2[i] ? 0 : Math.max(inv_r1[i], inv_r2[i]))
@@ -14,6 +22,18 @@ function divElems(inv_r1, inv_r2, alpha) {
     }
 }
 
+// This function calculates the normalization factor for the divergence between
+// two arrays of inverse ranks. It first extracts the counts from the mixedelements
+// parameter and finds the indices where the counts are greater than 0. It then
+// calculates the disjoint set for each array based on the number of non-zero
+// counts. If alpha is equal to infinity, it returns the sum of the elements in
+// inv_r1 and inv_r2 for the indices with non-zero counts. If alpha is equal to
+// 0, it returns the sum of the absolute value of the log of the ratio of each
+// element in inv_r1 and the disjoint set for inv_r2, and the absolute value of
+// the log of the ratio of each element in inv_r2 and the disjoint set for inv_r1.
+// Otherwise, it returns the sum of (alpha + 1)/alpha * (inv_r1^alpha - disjoint set^alpha)^(1/(alpha + 1))
+// for each element in inv_r1, and the same for inv_r2.
+
 function norm_divElems(mixedelements, inv_r1, inv_r2, alpha) {
   const c1 = mixedelements[0]['counts']  
   const c2 = mixedelements[1]['counts']
@@ -24,7 +44,11 @@ function norm_divElems(mixedelements, inv_r1, inv_r2, alpha) {
   const N1 = indices1.length
   const N2 = indices2.length
 
-  // calculate disjoint  set (could maybe go in utils)
+// This function calculates the disjoint set for a given array of inverse ranks
+  // based on the number of non-zero counts in the array and the number of non-zero
+  // counts in the other array. It returns 1/(number of non-zero counts in other array + 
+  // number of non-zero counts in this array/2)
+  
   function calc_disjoint(N1, N2) { 
     return( 1 / (N2 + N1/2) )
     }
@@ -54,6 +78,12 @@ function norm_divElems(mixedelements, inv_r1, inv_r2, alpha) {
       return term1 + term2
     }
 }
+
+// This function calculates the rank turbulence divergence for two arrays of mixed
+// elements, using the specified alpha value. It first calculates the arrays of
+// inverse ranks for each mixed element array and then calculates the divergence
+// and normalization factors using the divElems and norm_divElems functions. It
+// returns the divergence divided by the normalization.
 
 export default function rank_turbulence_divergence(mixedelements, alpha) {
 
