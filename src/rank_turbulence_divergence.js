@@ -1,4 +1,6 @@
-import { sum, which } from './utils_helpers'
+import { sum } from "https://cdn.skypack.dev/d3-array@3";
+
+import { which } from "./utils_helpers.js";
 
 function divElems(inv_r1, inv_r2, alpha) {
   if (alpha === Infinity) {
@@ -73,3 +75,4 @@ export default function rank_turbulence_divergence(mixedelements, alpha) {
     'normalization': normalization
   }
 }
+

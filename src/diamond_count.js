@@ -1,8 +1,7 @@
-export { diamond };
-import { rank_maxlog10, matlab_sort, which, rin } from "./utils_helpers";
-import { group, extent } from 'd3-array';
-import rank_turbulence_divergence from "./rank_turbulence_divergence";
-import structuredClone from '@ungap/structured-clone';
+import structuredClone  from 'https://cdn.skypack.dev/@ungap/structured-clone';
+import { group, extent } from "https://cdn.skypack.dev/d3-array@3";
+
+import { matlab_sort, which, rin, rank_maxlog10 } from "./utils_helpers.js";
 
 
 function rank2coord(rank) { return Math.floor(Math.log10(rank) / (1/15)) }
@@ -85,7 +84,7 @@ function diamond_counts(mixedelements) {
 
 
 // we expect wordshift to be of the form { divergence_elements: [ length of type ], normalization: float }
-function diamond(mixedelements, wordshift) {
+export default function diamond(mixedelements, wordshift) {
   
   // let rank_turbulence = rank_turbulence_divergence(mixedelements, alpha)
   let deltas = wordshift["divergence_elements"]
@@ -93,6 +92,7 @@ function diamond(mixedelements, wordshift) {
   let indices_deltas = sorted_div.orig_idx
  
   deltas = indices_deltas.map(e => deltas[e])
+
 
   mixedelements[0]['types']  =  indices_deltas.map(i => mixedelements[0]['types'][i])  
   mixedelements[0]['counts']  =  indices_deltas.map(i => mixedelements[0]['counts'][i])
@@ -110,7 +110,9 @@ function diamond(mixedelements, wordshift) {
   which(mixedelements[0]['ranks'].map((d,i) => mixedelements[0]['ranks'][i] > mixedelements[1]['ranks'][i])).map(e => deltas_loss[e] = -1)
   which(mixedelements[0]['ranks'].map((d,i) => mixedelements[1]['ranks'][i] < mixedelements[1]['ranks'][i])).map(e => deltas_gain[e] = -1)
 
+  
   const counts = diamond_counts(mixedelements)
-
+  
   return({'counts': counts, 'deltas': deltas, 'max_delta_loss': Math.max(...deltas_loss)})
 }
+

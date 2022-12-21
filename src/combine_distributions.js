@@ -1,36 +1,49 @@
-export { mixedElems };
-import { tiedrank } from './utils_helpers.js';
+import { max, descending } from "https://cdn.skypack.dev/d3-array@3";
 
-class mixedElems {
+import { tiedrank } from "./utils_helpers.js";
+import rank_turbulence_divergence from "./rank_turbulence_divergence.js";
+import diamond from './diamond_count.js'
+
+
+// Main class to (i) combine distribution, and (ii) transform 
+// data in the form we might need for the different
+// allotaxonometer plots.
+export default class mixedElems {
+  
   constructor(elem1, elem2) {
     this.elem1 = elem1;
     this.elem2 = elem2;
+    this.me = this.combElems()
   }
 
-  getUnions() {
-    let a = new Set(this.elem1.map(d=>d.types));
-    let b = new Set(this.elem2.map(d=>d.types));
-    return Array.from(new Set([...a, ...b])); 
+  // Takes arrays, returns a Set object
+  getUnions(x,y) {
+    let a = new Set(x);
+    let b = new Set(y);
+    return new Set([...a, ...b]);
   }
-
-  unionLength() {
-    return this.getUnions().length
-  }
+  
+  // Takes arrays, returns a Set object
+  setdiff(x,y) {
+    let a = new Set(x);
+    let b = new Set(y);
+    return new Set(
+      [...a].filter(x => !b.has(x)));
+  } 
 
   buildMixedElems() {
     const mixedelem = [[], []]
-    mixedelem[0]['types'] = this.getUnions(); 
-    mixedelem[1]['types'] = this.getUnions();
+    const x = this.elem1.map(d=>d.types)
+    const y = this.elem2.map(d=>d.types)
+    const union = Array.from(this.getUnions(x,y))
+    mixedelem[0]['types'] = union; 
+    mixedelem[1]['types'] = union;
     return mixedelem
-  }
-
-  buildEnumList() {
-    return [this.elem1, this.elem2]
   }
   
   combElems() {
     const mixedelem = this.buildMixedElems() 
-    const enum_list = this.buildEnumList()   
+    const enum_list = [this.elem1, this.elem2]
 
     for (let j=0; j < enum_list.length; j++) {
       const enumlist_types = enum_list[j].map(d => d.types)
@@ -49,10 +62,51 @@ class mixedElems {
       mixedelem[j]['counts']      = counts
       mixedelem[j]['ranks']       = tiedrank(mixedelem[j]['counts'])
       mixedelem[j]['probs']       = probs
-      mixedelem[j]['totalunique'] = this.unionLength()
-      
+      mixedelem[j]['totalunique'] = this.getUnions().length
+ 
     }
 
-  return mixedelem
+    return mixedelem
   }
-}
+
+  // Add all the different wordshift metrics here.
+  RTD(alpha) { return rank_turbulence_divergence(this.me, alpha) }
+ 
+  // the wordshift argument is a metric like rank_turbulence_divergence  
+  Diamond(wordshift) { return diamond(this.me, wordshift) }
+  
+  wordShift(dat) { 
+      const out = []
+      for (let i=0; i < this.me[0]['types'].length; i++) {
+        const rank_diff = this.me[0]['ranks'][i]-this.me[1]['ranks'][i]
+        out.push({
+          'type': `${ this.me[0]['types'][i]} (${ this.me[0]['ranks'][i]} ⇋ ${this.me[1]['ranks'][i] })` ,
+          'rank_diff': rank_diff,
+          'metric': rank_diff < 0 ? -dat.deltas[i] : dat.deltas[i], 
+        })
+      }
+  
+      return {
+        'dat': out.slice().sort((a, b) => descending(Math.abs(a.metric), Math.abs(b.metric))),
+        'max_shift': max(out, d => Math.abs(d.metric))
+        }
+      }
+  
+  balanceDat() {
+      const types_1 = this['elem1'].map(d => d.types)
+      const types_2 = this['elem2'].map(d => d.types)
+      
+      const union_types = this.getUnions(types_1, types_2)
+      const tot_types = types_1.length+types_2.length
+      
+      return [ 
+        { y_coord: "total count",     frequency: +(types_2.length / tot_types).toFixed(3) },
+        { y_coord: "total count",     frequency: -(types_1.length / tot_types).toFixed(3) },
+        { y_coord: "all names",       frequency: +(types_2.length / union_types.size).toFixed(3) },
+        { y_coord: "all names",       frequency: -(types_1.length / union_types.size).toFixed(3) },
+        { y_coord: "exclusive names", frequency: +(this.setdiff(types_2, types_1).size / types_2.length).toFixed(3) },
+        { y_coord: "exclusive names", frequency: -(this.setdiff(types_1, types_2).size / types_1.length).toFixed(3) } 
+      ]
+  }
+
+}  

@@ -1,4 +1,4 @@
-export { dot, matlab_sort, rin, sum, removeDuplicates, rank_maxlog10, tiedrank, which, zeros } ;
+export { matlab_sort, rin, rank_maxlog10, tiedrank, which, zeros } ;
 
 function which(x) {
   // Which indices are TRUE?
@@ -10,10 +10,6 @@ function which(x) {
       (out, bool, index) => bool ? out.concat(index) : out, 
       []
     )
-}
-
-function dot(a, b) { 
-  return a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n); 
 }
 
 function matlab_sort(A, rev) {
@@ -34,20 +30,6 @@ function matlab_sort(A, rev) {
   }
   
   return {'value': sorted, 'orig_idx': orig_idx}
-}
-
-function removeDuplicates(arr) {
-  
-  // Accepts an array from which the duplicates
-  // will be removed
-  if (!Array.isArray(arr)){
-    arr = []
-  }
-
-  let theSet = new Set(arr)
-  let uniqueArr = [...theSet]
-
-  return uniqueArr
 }
 
 function tiedrank(arr) {
@@ -83,10 +65,6 @@ function rin(arr1, arr2) {
   return Array.from(arr1, (x) => {
     return arr2.indexOf(x) == -1 ? false : true
   })
-}
-
-function sum(arr) {
-  return arr.reduce((partialSum, a) => partialSum + a, 0);
 }
 
 function zeros(length){
