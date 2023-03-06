@@ -2,6 +2,19 @@
 
 The primary purpose of the alloxonometer in general is to calculate and visualize the difference between any two Zipfian ranked lists of components. This package provides the utilities to facilitate the creationg of the allotaxonometer in `d3.js`
 
+## CSV input
+
+The allotaxonometer expects 2 tables in the following form:
+
+|    | types   |   counts |   totalunique |   probs |
+|----|---------|----------|---------------|---------|
+|  0 | John    |     8502 |          1161 |  0.0766 |
+|  1 | William |     7494 |          1161 |  0.0675 |
+|  2 | James   |     5097 |          1161 |  0.0459 |
+|  3 | George  |     4458 |          1161 |  0.0402 |
+|  4 | Charles |     4061 |          1161 |  0.0366 |
+
+
 ## Babynames data
 
 The original babyname dataset for boys and girls can be found on the [catalog.data.gov](https://catalog.data.gov/dataset?tags=baby-names) website. But we use the dataset [here](http://pdodds.w3.uvm.edu/permanent-share/pocs-babynames.zip) to replicate the original paper. You can find a 5-years aggregated version used in the `Observable` version in `data/`. The original dataset includes each year from 1880–2018, which have 5 or more applications. You can convert the original folder into the formatted `.json` file using R with the following command:
