@@ -17,13 +17,10 @@ The allotaxonometer expects 2 tables in the following form:
 ## Layers of meaning
 
 
-<p float="left"  align="middle">
-  <img width="47%" alt="Screenshot 2024-10-14 at 7 03 01 AM" src="https://github.com/user-attachments/assets/9a98d4e5-7a11-47ad-8d71-5424de755daa">
-  <img width="52%" alt="Fig2" src="https://github.com/user-attachments/assets/69dd9029-eacc-4b12-84eb-fca01bf40491">
-  <figcaption>https://arxiv.org/pdf/2002.09770</figcaption>
+<p>
+<img width="100%" alt="Screenshot 2024-10-14 at 7 03 01 AM" src="https://github.com/user-attachments/assets/9a98d4e5-7a11-47ad-8d71-5424de755daa">
+<figcaption>FIG 1 - https://arxiv.org/pdf/2002.09770</figcaption>
 </p>
-
-FIG 1
 
  - [x] A. Legend bin rank-rank pairs
  - [x] B. Types at the top of the diamond rank high for both systems
@@ -34,7 +31,10 @@ FIG 1
  - [x] G. Balances at the bottom right of the rank-rank histogram.
  - [x] H,I,J. show examples of three extremes of how systems might compare on rank-rank histograms
 
-FIG 2
+<p>
+<img width="100%" alt="Fig2" src="https://github.com/user-attachments/assets/69dd9029-eacc-4b12-84eb-fca01bf40491">
+<figcaption>FIG 2 - https://arxiv.org/pdf/2002.09770</figcaption>
+</p>
 
  - [x] A. Choosing the scale of the instrument
  - [x] B. Contour lines to track $\alpha$
