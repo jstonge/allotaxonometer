@@ -1,9 +1,9 @@
-import { range, max, descending } from "https://cdn.skypack.dev/d3-array@3";
-import { scaleBand, scaleOrdinal } from "https://cdn.skypack.dev/d3-scale@4";
-import { select } from "https://cdn.skypack.dev/d3-selection@3";
-import { axisBottom } from "https://cdn.skypack.dev/d3-axis@3";
-import { interpolateInferno } from "https://cdn.skypack.dev/d3-scale-chromatic@3";
-import { rgb } from "https://cdn.skypack.dev/d3-color@3";
+import { range, max, descending } from "d3-array";
+import { scaleBand, scaleOrdinal } from "d3-scale";
+import { select } from "d3-selection";
+import { axisBottom } from "d3-axis";
+import { interpolateInferno } from "d3-scale-chromatic";
+import { rgb } from "d3-color";
 
 export default function LegendChart(data, {
     tickSize = 0,

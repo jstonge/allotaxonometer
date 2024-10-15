@@ -1,5 +1,5 @@
-import structuredClone  from 'https://cdn.skypack.dev/@ungap/structured-clone';
-import { group, extent } from "https://cdn.skypack.dev/d3-array@3";
+import structuredClone  from '@ungap/structured-clone';
+import { group, extent } from "d3-array";
 
 import { matlab_sort, which, rin, rank_maxlog10 } from "./utils_helpers.js";
 
@@ -36,7 +36,6 @@ function diamond_counts(mixedelements) {
   // iterate through each cell
   for (var i=0; i < Ncells; i++) { // Ncells is the length of the square matrix (note 1-d length not total number of cells)
     for (var j=0; j < Ncells; j++) { 
-
       
       //const idx_me = existing_coords.indexOf(`(${i}, ${j})`) 
       

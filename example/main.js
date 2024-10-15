@@ -6,7 +6,7 @@ import LegendChart from '../src/legend_plot.js'
 
 import { test_elem_1, test_elem_2 } from '../test/test_data.js'
 
-import { select } from "https://cdn.skypack.dev/d3-selection@3";
+import { select } from "d3-selection";
 
     
 // Combining both systems in mixedElems class

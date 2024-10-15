@@ -1,7 +1,7 @@
-import { range, rollup, InternSet } from "https://cdn.skypack.dev/d3-array@3";
-import { scaleLinear, scaleBand } from "https://cdn.skypack.dev/d3-scale@4";
-import { select } from "https://cdn.skypack.dev/d3-selection@3";
-import { axisTop, axisLeft } from "https://cdn.skypack.dev/d3-axis@3";
+import { range, rollup, InternSet } from "d3-array";
+import { scaleLinear, scaleBand } from "d3-scale";
+import { select } from "d3-selection";
+import { axisTop, axisLeft } from "d3-axis";
 
 export default function WordShiftChart(data, {
     // title, // given d in data, returns the title text

@@ -1,9 +1,9 @@
 
-import { max, shuffle, range } from "https://cdn.skypack.dev/d3-array@3";
-import { scaleLog, scaleLinear, scaleBand, scaleSequentialLog } from "https://cdn.skypack.dev/d3-scale@4";
-import { select } from "https://cdn.skypack.dev/d3-selection@3";
-import { interpolateInferno } from "https://cdn.skypack.dev/d3-scale-chromatic@3";
-import { axisBottom, axisRight } from "https://cdn.skypack.dev/d3-axis@3";
+import { max, shuffle, range } from "d3-array";
+import { scaleLog, scaleLinear, scaleBand, scaleSequentialLog } from "d3-scale";
+import { select } from "d3-selection";
+import { interpolateInferno } from "d3-scale-chromatic";
+import { axisBottom, axisRight } from "d3-axis";
 
 import { rin } from "./utils_helpers.js";
 

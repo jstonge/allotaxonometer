@@ -1,4 +1,4 @@
-import { sum } from "https://cdn.skypack.dev/d3-array@3";
+import { sum } from "d3-array";
 
 import { which } from "./utils_helpers.js";
 
