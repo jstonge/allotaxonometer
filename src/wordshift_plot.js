@@ -19,6 +19,13 @@ export default function WordShiftChart(data, {
     yRange, // [top, bottom]
     colors = ["lightgrey", "lightblue"] 
   } = {}, passed_svg) {
+
+    //ADDED
+    const margin = { top: 20, right: 30, bottom: 30, left: 1300 };
+    const width = 300 - margin.left - margin.right;
+    const height = 740 - margin.top - margin.bottom;
+    const xRange = [marginLeft, width - marginRight];
+    
     // Compute values.
     const X = data['dat'].slice(0, topN).map(d => d.metric);
     const Y = data['dat'].slice(0, topN).map(d => d.type);
