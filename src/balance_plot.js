@@ -14,7 +14,7 @@ export default function BalanceChart(data, {
     xRange = [marginLeft, width - marginRight], // [left, right]
     yPadding = 0.5, // amount of y-range to reserve to separate bars
     colors = ["lightgrey", "lightblue"]
-  } = {}) {
+  } = {}, passed_svg) {
     // Compute values.
     const X = data.map(d => d.frequency);
     const Y = data.map(d => d.y_coord);
@@ -42,13 +42,15 @@ export default function BalanceChart(data, {
     // Compute titles.
     const title = i => `${Y[i]}\n${format(X[i])}`;
     
-    const svg = select("#balance").append("svg")
+    // const svg = select("#balance").append("svg")
+
+    const g = passed_svg.append('g')
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
         .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
   
-    svg.append("g")
+    g.append("g")
         .attr("transform", `translate(0,${marginTop})`)
         .call(xAxis.tickFormat("").ticks(""))
         .call(g => g.select(".domain").remove())
@@ -75,7 +77,7 @@ export default function BalanceChart(data, {
         .text(title);
   
     // Percentage at the bar charts extremities
-    svg.append("g")
+    g.append("g")
         .attr("text-anchor", "end")
         .attr("font-family", "sans-serif")
         .attr("font-size", 10)
@@ -91,7 +93,7 @@ export default function BalanceChart(data, {
         .text(i => format(Math.abs(X[i])));
     
     // Bar chart labels
-    svg.append("g")
+    g.append("g")
         .attr("transform", `translate(${xScale(0)},-12)`)
         .call(yAxis)
         .call(g => g.select(".domain").remove())
@@ -100,5 +102,5 @@ export default function BalanceChart(data, {
               .attr("opacity", 0.5)
             .attr("text-anchor", "middle"));
   
-    return svg.node();
+    return g.node();
   }

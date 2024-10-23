@@ -10,7 +10,7 @@ import { rin } from "./utils_helpers.js";
 const visHeight = 612
 const visWidth = 612
 
-export default function DiamondChart(dat) {
+export default function DiamondChart(dat, passed_svg) {
   
     const margin = ({ top: 200, left: 0, right: 140, bottom: 140 })
     const ncells = max(dat, d => d.x1)
@@ -26,15 +26,15 @@ export default function DiamondChart(dat) {
     
     const color_scale = scaleSequentialLog().domain([max_val, 1]).interpolator(interpolateInferno)
     
-    const svg = select("#diamondplot").append("svg")
+    // const svg = select("#diamondplot").append("svg")
 
-    const g = svg 
+    const g = passed_svg.append('g') 
+      .attr('transform', `translate(${ visWidth / 2.5}, -25) rotate(135) scale(1,-1)`)
       .attr('height', visHeight + margin.top + margin.bottom)
       .attr('width', visWidth)
       .attr("viewBox", [-20, -20, visWidth + margin.top, visHeight]);
     
     // Rotate the canvas
-    svg.attr('transform', `translate(${ visWidth / 2.5}, -25) rotate(135) scale(1,-1)`);
   
     // Xaxis - see below for the functions
     g.append('g')
@@ -102,7 +102,7 @@ export default function DiamondChart(dat) {
         .attr("text-anchor", d => d.x1 - d.y1 <= 0 ? "start" : "end")
     
     // Draw the middle line
-    svg.append('line')
+    g.append('line')
      .style("stroke", "black")
      .style("stroke-width", 1)
      .attr("x1", 0)
@@ -120,7 +120,7 @@ export default function DiamondChart(dat) {
     
     cells.call(Tooltips, tooltip) // not working with labels
         
-    return svg.node()
+    return g.node()
 }
 
     

@@ -18,7 +18,7 @@ export default function WordShiftChart(data, {
     yDomain, // an array of (ordinal) y-values
     yRange, // [top, bottom]
     colors = ["lightgrey", "lightblue"] 
-  } = {}) {
+  } = {}, passed_svg) {
     // Compute values.
     const X = data['dat'].slice(0, topN).map(d => d.metric);
     const Y = data['dat'].slice(0, topN).map(d => d.type);
@@ -46,14 +46,21 @@ export default function WordShiftChart(data, {
     // Compute titles.
     title = i => `${Y[i]}\n${format(X[i])}`;
 
-    const svg = select("#wordshift")
-        .append("svg")
+    // const svg = select("#wordshift")
+    //     .append("svg")
+    //     .attr("width", width)
+    //     .attr("height", height)
+    //     .attr("viewBox", [0, 0, width, height])
+    //     .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+    const g = passed_svg.append('g')
+        .attr("transform", `translate(${margin.left}, ${margin.top})`)
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
         .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
-    svg.append("g")
+
+    g.append("g")
         .attr("transform", `translate(0,${marginTop})`)
         .call(xAxis)
         .call(g => g.select(".domain").remove())
@@ -67,7 +74,7 @@ export default function WordShiftChart(data, {
             .attr("text-anchor", "center")
             .text(xLabel));
 
-    const bar = svg.append("g")
+    const bar = g.append("g")
       .selectAll("rect")
       .data(I)
       .join("rect")
@@ -81,7 +88,7 @@ export default function WordShiftChart(data, {
         .text(title);
 
     // name labels on the opposite side of the bar
-    svg.append("g")
+    g.append("g")
         .attr("transform", `translate(${xScale(0)},0)`)
         .call(yAxis)
         .call(g => g.selectAll(".tick text")
@@ -89,5 +96,5 @@ export default function WordShiftChart(data, {
             .attr("text-anchor", y => YX.get(y) > 0 ? "end" : "start" )
             .attr("x",  y => YX.get(y) > 0 ? -6 : 6 ));
 
-    return svg.node();
+    return g.node();
   }

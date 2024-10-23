@@ -12,14 +12,15 @@ export default function LegendChart(data, {
     marginTop = 11,
     marginBottom = 16 + tickSize,
     marginLeft = 0,
-    } = {}) {
+    } = {}, passed_svg) {
   
     const N_CATEGO = 20
     const ramp = range(N_CATEGO).map(i => rgb(interpolateInferno(i / (N_CATEGO - 1))).formatHex())
     const my_inferno = scaleOrdinal(range(N_CATEGO), ramp)
     const maxCountLog = Math.ceil(Math.log10(max(data, d => d.value)))+1
 
-    const svg = select("#legend").append("svg")
+    // const svg = select("#legend").append("svg")
+    const g = passed_svg.append('g')
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
@@ -33,7 +34,7 @@ export default function LegendChart(data, {
        .domain(my_inferno.domain())
        .rangeRound([marginLeft, width - 100]);
     
-    svg.append("g")
+    g.append("g")
      .selectAll("rect")
      .data(my_inferno.domain())
      .join("rect")
@@ -51,7 +52,7 @@ export default function LegendChart(data, {
        .domain(range(maxCountLog).map(i => 10**i).sort(descending))
        .rangeRound([marginLeft-40, width-90]);
   
-    svg.append("g")
+    g.append("g")
         .call(axisBottom(x2).tickSize(tickSize)).attr("text-anchor", "start")
         .call(g => g.select(".domain").remove())
         .call(g => g.append("text") 
@@ -68,5 +69,5 @@ export default function LegendChart(data, {
           .attr("dy", -5) // magic number
           .attr('transform', 'rotate(90)') // rotating ticks and title
   
-    return svg.node();
+    return g.node();
   }
