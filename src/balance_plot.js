@@ -64,7 +64,7 @@ export default function BalanceChart(data, {
             .attr("text-anchor", "center")
             .text(""));
   
-    const bar = svg.append("g")
+    const bar = g.append("g")
       .selectAll("rect")
       .data(I)
       .join("rect")
