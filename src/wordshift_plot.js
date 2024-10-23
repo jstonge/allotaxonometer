@@ -10,9 +10,9 @@ export default function WordShiftChart(data, {
     marginRight = 40, // right margin, in pixels
     marginBottom = 10, // bottom margin, in pixels
     marginLeft = 40, // left margin, in pixels
-    width = 300, // outer width of chart, in pixels
-    height = 740, // the outer height of the chart, in pixels
-    xRange = [marginLeft, width - marginRight], // [left, right]
+    // width = 300, // outer width of chart, in pixels
+    // height = 740, // the outer height of the chart, in pixels
+    // xRange = [marginLeft, width - marginRight], // [left, right]
     xLabel = "← System 1 · Divergence contribution · System 2 →", // a label for the x-axis
     yPadding = 0.2, // amount of y-range to reserve to separate bars
     yDomain, // an array of (ordinal) y-values
@@ -25,7 +25,7 @@ export default function WordShiftChart(data, {
     const width = 300 - margin.left - margin.right;
     const height = 740 - margin.top - margin.bottom;
     const xRange = [marginLeft, width - marginRight];
-    
+
     // Compute values.
     const X = data['dat'].slice(0, topN).map(d => d.metric);
     const Y = data['dat'].slice(0, topN).map(d => d.type);
