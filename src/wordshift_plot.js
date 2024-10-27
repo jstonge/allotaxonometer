@@ -17,7 +17,7 @@ export default function WordShiftChart(data, {
     yPadding = 0.2, // amount of y-range to reserve to separate bars
     yDomain, // an array of (ordinal) y-values
     yRange, // [top, bottom]
-    colors = ["lightgrey", "lightblue"] 
+    colors = ["lightgrey", "lightblue"]
   } = {}, passed_svg) {
 
     //ADDED
@@ -55,11 +55,8 @@ export default function WordShiftChart(data, {
 
     // const svg = select("#wordshift")
     //     .append("svg")
-    //     .attr("width", width)
-    //     .attr("height", height)
-    //     .attr("viewBox", [0, 0, width, height])
-    //     .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
-    const g = passed_svg.append('g')
+
+    const g = passed_svg  //.append('g')
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
         .attr("width", width)
         .attr("height", height)

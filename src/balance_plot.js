@@ -18,38 +18,38 @@ export default function BalanceChart(data, {
     // Compute values.
     const X = data.map(d => d.frequency);
     const Y = data.map(d => d.y_coord);
-  
+
     // Compute default domains, and unique the y-domain.
     if (xDomain === undefined) xDomain = extent(X);
     const yDomain = new InternSet(Y);
-  
+
     // Omit any data not present in the y-domain.
     // Lookup the x-value for a given y-value.
     const I = range(X.length).filter(i => yDomain.has(Y[i]));
     const YX = rollup(I, ([i]) => X[i], i => Y[i]);
-  
+
     // Compute the default height.
     if (height === undefined) height = Math.ceil((yDomain.size + yPadding) * 25) + marginTop + marginBottom;
     const yRange = [marginTop, height - marginBottom];
-  
+
     // Construct scales, axes, and formats.
     const xScale = scaleLinear(xDomain, xRange);
     const yScale = scaleBand(yDomain, yRange).padding(yPadding);
     const xAxis = axisTop(xScale).ticks(width / 80, "%");
     const yAxis = axisLeft(yScale).tickSize(0).tickPadding(6);
     const format = xScale.tickFormat(100, "%");
-  
+
     // Compute titles.
     const title = i => `${Y[i]}\n${format(X[i])}`;
-    
+
     // const svg = select("#balance").append("svg")
 
-    const g = passed_svg.append('g')
+    const g = passed_svg  //.append('g')
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
         .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
-  
+
     g.append("g")
         .attr("transform", `translate(0,${marginTop})`)
         .call(xAxis.tickFormat("").ticks(""))
@@ -63,7 +63,7 @@ export default function BalanceChart(data, {
             .attr("fill", "currentColor")
             .attr("text-anchor", "center")
             .text(""));
-  
+
     const bar = g.append("g")
       .selectAll("rect")
       .data(I)
@@ -75,7 +75,7 @@ export default function BalanceChart(data, {
         .attr("height", yScale.bandwidth())
       .append("title")
         .text(title);
-  
+
     // Percentage at the bar charts extremities
     g.append("g")
         .attr("text-anchor", "end")
@@ -91,7 +91,7 @@ export default function BalanceChart(data, {
         .attr("y", i => yScale(Y[i]) + yScale.bandwidth() / 2)
         .attr("dy", "0.35em")
         .text(i => format(Math.abs(X[i])));
-    
+
     // Bar chart labels
     g.append("g")
         .attr("transform", `translate(${xScale(0)},-12)`)
@@ -101,6 +101,6 @@ export default function BalanceChart(data, {
           .filter(y => YX.get(y))
               .attr("opacity", 0.5)
             .attr("text-anchor", "middle"));
-  
+
     return g.node();
   }
