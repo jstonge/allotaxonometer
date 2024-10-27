@@ -51,7 +51,7 @@ export default function WordShiftChart(data, {
     //     .append("svg")
 
     const g = passed_svg  //.append('g')
-        .attr("transform", `translate(${margin.left}, ${margin.top})`)
+        .attr("transform", `translate(${marginLeft}, ${marginTop})`)
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
