@@ -73,6 +73,24 @@ import { tiedrank } from "./utils_helpers.js";
       // Add all the different wordshift metrics here.
       function RTD(me, alpha) { return rank_turbulence_divergence(me, alpha) }
      
+      function balanceDat(elem1, elem2) {
+        const types_1 = elem1.map(d => d.types)
+        const types_2 = elem2.map(d => d.types)
+        
+        const union_types = getUnions(types_1, types_2)
+        const tot_types = types_1.length+types_2.length
+        
+        return [ 
+          { y_coord: "total count",     frequency: +(types_2.length / tot_types).toFixed(3) },
+          { y_coord: "total count",     frequency: -(types_1.length / tot_types).toFixed(3) },
+          { y_coord: "all names",       frequency: +(types_2.length / union_types.size).toFixed(3) },
+          { y_coord: "all names",       frequency: -(types_1.length / union_types.size).toFixed(3) },
+          { y_coord: "exclusive names", frequency: +(setdiff(types_2, types_1).size / types_2.length).toFixed(3) },
+          { y_coord: "exclusive names", frequency: -(setdiff(types_1, types_2).size / types_1.length).toFixed(3) } 
+        ]
+      }
+      
+
       // the wordshift argument is a metric like rank_turbulence_divergence  
       function myDiamond(me, wordshift) { return diamond(me, wordshift) }
    
@@ -88,24 +106,6 @@ import { tiedrank } from "./utils_helpers.js";
         }
         
         return out.slice().sort((a, b) => descending(Math.abs(a.metric), Math.abs(b.metric)))
-      }
-
-      
-      function balanceDat() {
-          const types_1 = this['elem1'].map(d => d.types)
-          const types_2 = this['elem2'].map(d => d.types)
-          
-          const union_types = getUnions(types_1, types_2)
-          const tot_types = types_1.length+types_2.length
-          
-          return [ 
-            { y_coord: "total count",     frequency: +(types_2.length / tot_types).toFixed(3) },
-            { y_coord: "total count",     frequency: -(types_1.length / tot_types).toFixed(3) },
-            { y_coord: "all names",       frequency: +(types_2.length / union_types.size).toFixed(3) },
-            { y_coord: "all names",       frequency: -(types_1.length / union_types.size).toFixed(3) },
-            { y_coord: "exclusive names", frequency: +(setdiff(types_2, types_1).size / types_2.length).toFixed(3) },
-            { y_coord: "exclusive names", frequency: -(setdiff(types_1, types_2).size / types_1.length).toFixed(3) } 
-          ]
       }
 
 export { combElems, RTD, myDiamond, wordShift_dat, balanceDat }
