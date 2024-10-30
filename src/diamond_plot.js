@@ -89,9 +89,9 @@ export default function DiamondChart(dat, alpha, passed_svg) {
     .attr("stroke", "grey")
     .attr("fill-opacity", 0.1)
   .selectAll("path")
-  .data(get_contours())
+  .data(get_contours(alpha))
   .join("path")
-    .attr("d", d3.geoPath(alpha));
+    .attr("d", d3.geoPath());
 
   // Heatmap
   const cells = g
