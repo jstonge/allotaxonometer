@@ -1,62 +1,58 @@
-import { range, max, descending } from "d3-array";
-import { scaleBand, scaleOrdinal } from "d3-scale";
-import { select } from "d3-selection";
-import { axisBottom } from "d3-axis";
-import { interpolateInferno } from "d3-scale-chromatic";
-import { rgb } from "d3-color";
+import * as d3 from "d3";
 
-export default function LegendChart(data, {
-    tickSize = 0,
-    width = 370,
+export default function myLegend(color, {
+    tickSize = 6,
+    max_count_log = 4,
+    width = 320, 
     height = 44 + tickSize,
-    marginTop = 11,
+    marginTop = 18,
+    marginRight = 0,
     marginBottom = 16 + tickSize,
     marginLeft = 0,
-    } = {}, passed_svg) {
-
-    const N_CATEGO = 20
-    const ramp = range(N_CATEGO).map(i => rgb(interpolateInferno(i / (N_CATEGO - 1))).formatHex())
-    const my_inferno = scaleOrdinal(range(N_CATEGO), ramp)
-    const maxCountLog = Math.ceil(Math.log10(max(data, d => d.value)))+1
-
-    // const svg = select("#legend").append("svg")
+    ticks = width / 64,
+    tickFormat,
+    tickValues
+  } = {}, passed_svg) {
+  
+  
+    // const svg = d3.create("svg")
     const g = passed_svg  //.append('g')
         .attr("width", width)
         .attr("height", height)
         .attr("viewBox", [0, 0, width, height])
         .style("overflow", "visible")
         .style("display", "block");
-
+  
     let tickAdjust = g => g.selectAll(".tick line").attr("y1", marginTop + marginBottom - height);
-
-    let x;
-    x = scaleBand()
-       .domain(my_inferno.domain())
+    
+    // let x;
+    let x = d3.scaleBand()
+       .domain(color.domain())
        .rangeRound([marginLeft, width - 100]);
-
+    
     g.append("g")
      .selectAll("rect")
-     .data(my_inferno.domain())
+     .data(color.domain())
      .join("rect")
-       .attr("x", x)
+       .attr("x", (d) => (x(d)))
        .attr("y", marginTop)
        .attr("width", Math.max(0, x.bandwidth() - 1))
        .attr("height", height - marginTop - marginBottom)
-       .attr("fill", my_inferno)
+       .attr("fill", color)
        .attr("transform", "rotate(-90) translate(-70,0)");
-
-    tickAdjust = () => {};
-
-    let x2;
-    x2 = scaleBand()
-       .domain(range(maxCountLog).map(i => 10**i).sort(descending))
+  
+    // tickAdjust = () => {};
+  
+    // let x2;
+    let x2 = d3.scaleBand()
+       .domain(d3.range(max_count_log).map(i => 10**i).sort(d3.descending))
        .rangeRound([marginLeft-40, width-90]);
-
+  
     g.append("g")
-        .call(axisBottom(x2).tickSize(tickSize)).attr("text-anchor", "start")
+        .call(d3.axisBottom(x2).tickSize(tickSize)).attr("text-anchor", "start")
         .call(g => g.select(".domain").remove())
-        .call(g => g.append("text")
-          .attr("x", marginLeft - 25) // magic number moving legend title left and right
+        .call(g => g.append("text") 
+          .attr("x", marginLeft - 25) // magic number moving legend title left and right 
           .attr("y", marginTop + marginBottom) // magic number moving legend title up and down
           .attr("fill", "currentColor")
           .attr("text-anchor", "start")
@@ -68,6 +64,6 @@ export default function LegendChart(data, {
           .attr("dx", 30) // magic number moving ticks left and right
           .attr("dy", -5) // magic number
           .attr('transform', 'rotate(90)') // rotating ticks and title
-
+  
     return g.node();
   }
