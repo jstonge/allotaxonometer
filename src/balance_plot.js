@@ -61,8 +61,7 @@ export default function BalanceChart(data, {
     const g = passed_svg  //.append('g')
         .attr("width", width)
         .attr("height", height)
-        .attr("viewBox", [0, 0, width, height])
-        .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+        .attr("viewBox", [0, 0, width, height]);
   
     g.append("g")
         .attr("transform", `translate(0,${marginTop})`)
