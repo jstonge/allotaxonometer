@@ -6,7 +6,7 @@ const visHeight = 612
 const visWidth = 612
 const canvas_mult_size = 1.02
 
-export default function DiamondChart(dat, alpha) {
+export default function DiamondChart(dat, alpha, passed_svg) {
 
   const margin = ({ top: 200, left: 0, right: 140, bottom: 140 })
   const ncells = d3.max(dat, d => d.x1)
@@ -23,11 +23,11 @@ export default function DiamondChart(dat, alpha) {
   const color_scale = d3.scaleSequentialLog().domain([max_val, 1]).interpolator(d3.interpolateInferno)
 
   // ADDED 
-  const svg = d3.create("svg")
+  // const svg = d3.create("svg")
 
   // SWAP THOSE LINES
-  // const g = passed_svg  //.append('g')
-  const g = svg.attr("id", "myGraph") 
+  // const g = svg.attr("id", "myGraph") 
+  const g = passed_svg  //.append('g')
     .attr('height', visHeight + margin.top + margin.bottom)
     .attr('width', visWidth)
     .attr("viewBox", [0-50, 0, visWidth + margin.top+50, visHeight]);
