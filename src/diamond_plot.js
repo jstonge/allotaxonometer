@@ -2,35 +2,34 @@ import * as d3 from "d3";
 
 import { rin } from "./utils_helpers.js";
 
-export default function DiamondChart(dat, alpha) {
+export default function DiamondChart(dat, alpha, maxlog10) {
 
-  function alphaNormType2(x1, x2, alpha) {
-  if (alpha < 0) {
-      throw new Error('alpha must be >= 0');
-  } else if (alpha === Infinity) {
-      // Handle alpha = Inf by finding the element-wise max
-      return x1.map((row, i) => row.map((val, j) => {
-          const maxVal = Math.max(val, x2[i][j]);
-          return val === x2[i][j] ? 0 : maxVal;
-      }));
-  } else if (alpha === 0) {
-      // Handle alpha = 0 by computing log divergence element-wise
-      return x1.map((row, i) => row.map((val, j) => Math.abs(Math.log(val / x2[i][j]))));
-  } else {
-      // General case for alpha > 0
-      const prefactor = (alpha + 1) / alpha;
-      const power = 1 / (alpha + 1);
-      return x1.map((row, i) => row.map((val, j) =>
-          prefactor * Math.abs(Math.pow(val, alpha) - Math.pow(x2[i][j], alpha)) ** power
-      ));
+    function alphaNormType2(x1, x2, alpha) {
+    if (alpha < 0) {
+        throw new Error('alpha must be >= 0');
+    } else if (alpha === Infinity) {
+        // Handle alpha = Inf by finding the element-wise max
+        return x1.map((row, i) => row.map((val, j) => {
+            const maxVal = Math.max(val, x2[i][j]);
+            return val === x2[i][j] ? 0 : maxVal;
+        }));
+    } else if (alpha === 0) {
+        // Handle alpha = 0 by computing log divergence element-wise
+        return x1.map((row, i) => row.map((val, j) => Math.abs(Math.log(val / x2[i][j]))));
+    } else {
+        // General case for alpha > 0
+        const prefactor = (alpha + 1) / alpha;
+        const power = 1 / (alpha + 1);
+        return x1.map((row, i) => row.map((val, j) =>
+            prefactor * Math.abs(Math.pow(val, alpha) - Math.pow(x2[i][j], alpha)) ** power
+        ));
+    }
   }
-}
-const maxlog10 = Math.ceil(d3.max([Math.log10(d3.max(me[0].ranks)), Math.log10(d3.max(me[1].ranks))]))
-const Ninset = Math.pow(10, 3)
-const tmpr1 = logspace(0, maxlog10, Ninset);
-const tmpr2 = logspace(0, maxlog10, Ninset);
-const x1 = tmpr1.map(val => Array(tmpr1.length).fill(Math.pow(val, -1)));
-const x2 = Array(tmpr1.length).fill(tmpr2.map(val => Math.pow(val, -1)));
+  const Ninset = Math.pow(10, 3)
+  const tmpr1 = logspace(0, maxlog10, Ninset);
+  const tmpr2 = logspace(0, maxlog10, Ninset);
+  const x1 = tmpr1.map(val => Array(tmpr1.length).fill(Math.pow(val, -1)));
+  const x2 = Array(tmpr1.length).fill(tmpr2.map(val => Math.pow(val, -1)));
 
   const  deltamatrix =  alphaNormType2(x1, x2, alpha).map(row => row.map(val => val / rtd.normalization));
 
