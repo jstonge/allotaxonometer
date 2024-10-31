@@ -4,6 +4,9 @@ import { rin } from "./utils_helpers.js";
 
 export default function DiamondChart(dat, deltamatrix, passed_svg) {
 
+  const visHeight = 612
+  const visWidth = 612
+  const canvas_mult_size = 1.02
 
   const draw_polygon = (g, tri_coords, bg_color) => g
       .append("polygon")
@@ -271,3 +274,4 @@ export default function DiamondChart(dat, deltamatrix, passed_svg) {
   
   return g.node();
 }
+
