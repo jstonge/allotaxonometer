@@ -151,7 +151,7 @@ export default function DiamondChart(dat, deltamatrix, passed_svg) {
   const Ncontours = 10;
 
   // Create evenly spaced indices and heights for contours
-  const contourIndices = d3.range(1, tmpr1.length, tmpr1.length / (Ncontours + 2)).map(Math.round);
+  const contourIndices = d3.range(1, deltamatrix.length, deltamatrix.length / (Ncontours + 2)).map(Math.round);
   const heights = contourIndices.slice(1, -1).map(index => deltamatrix[deltamatrix.length - 1][index]);
 
   // Prepare data for contours
