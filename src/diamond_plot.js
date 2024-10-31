@@ -232,14 +232,14 @@ export default function DiamondChart(dat, alpha, passed_svg) {
   draw_polygon(g, grey_triangle, "grey")
 
   // contours  
-  // g.append("g")
-  //     .attr("fill", "none")
-  //     .attr("stroke", "grey")
-  //     .attr("fill-opacity", 0.1)
-  //   .selectAll("path")
-  //   .data(get_contours())
-  //   .join("path")
-  //     .attr("d", d3.geoPath());
+  g.append("g")
+      .attr("fill", "none")
+      .attr("stroke", "grey")
+      .attr("fill-opacity", 0.1)
+    .selectAll("path")
+    .data(get_contours())
+    .join("path")
+      .attr("d", d3.geoPath());
 
   // Heatmap
   const cells = g
