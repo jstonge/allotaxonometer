@@ -80,16 +80,7 @@ export default function DiamondChart(dat, alpha, passed_svg) {
     .attr("stroke", "grey")
     .attr("fill-opacity", 0.1)
   .selectAll("path")
-  .data(get_contours(alpha))
-  .join("path")
-    .attr("d", d3.geoPath());
-
-  g.append("g")
-    .attr("fill", "none")
-    .attr("stroke", "grey")
-    .attr("fill-opacity", 0.1)
-  .selectAll("path")
-  .data(get_contours(alpha))
+  .data(get_contours(visHeight, alpha))
   .join("path")
     .attr("d", d3.geoPath());
 
@@ -134,52 +125,57 @@ export default function DiamondChart(dat, alpha, passed_svg) {
   return g.node()
 }
 
-function rank_turbulence(x, y, alpha) {
-  if (alpha === Infinity) {
-      return x == y ? 0 : Math.max(x)
-  } else if (alpha == 0) {
-    // cheating a little bit
-    return (1+1) / 1 * Math.abs(x**1 - y**1)**(1. / (1+1))
-  } else {
-      return (alpha+1) / alpha * Math.abs(x**alpha - y**alpha)**(1. / (alpha+1))
-    }
-}
-
-function get_contours(alpha) {
-  // see https://observablehq.com/@d3/contours
-  
-  const q = 4; // The level of detail, e.g., sample every 4 pixels in x and y.
-  const x0 = -1, x1 = visHeight + q - 2;
-  const y0 = -1, y1 = visHeight + q - 2;
-  const n = Math.ceil((x1 - x0) / q);
-  const m = Math.ceil((y1 - y0) / q);
-  const grid = new Array(n * m);
-
-  // evaluate function across grid
-  for (let j = 0; j < m; ++j) {
-    for (let i = 0; i < n; ++i) {
-      grid[j * n + i] = rank_turbulence(i, j, alpha);
-    }
+  function rank_turbulence(x, y, alpha) {
+    if (alpha === Infinity) {
+        return x == y ? 0 : Math.max(x)
+    } else if (alpha == 0) {
+      // cheating a little bit
+      return (1+1) / 1 * Math.abs(x**1 - y**1)**(1. / (1+1))
+    } else {
+        return (alpha+1) / alpha * Math.abs(x**alpha - y**alpha)**(1. / (alpha+1))
+      }
   }
-  
-  grid.x = -q;
-  grid.y = -q;
-  grid.k =  q;
-  grid.n =  n;
-  grid.m =  m;
 
-  const grid_rev = grid.reverse()
-  
-  // Converts from grid coordinates (indexes) to screen coordinates (pixels).
-  const transform = ({type, value, coordinates}) => {
-    return {type, value, coordinates: coordinates.map(rings => {
-      return rings.map(points => {
-        return points.map(([x, y]) => ([
-          grid_rev.x + grid_rev.k * x + 3,
-          grid_rev.y + grid_rev.k * y + 3
-        ]));
-      });
-    })};
+  get_contours = function contour(visHeight, alpha) {
+    // see https://observablehq.com/@d3/contours
+    
+    const q = 4; // The level of detail, e.g., sample every 4 pixels in x and y.
+    const x0 = -1, x1 = visHeight + q - 2;
+    const y0 = -1, y1 = visHeight + q - 2;
+    const n = Math.ceil((x1 - x0) / q);
+    const m = Math.ceil((y1 - y0) / q);
+    const grid = new Array(n * m);
+
+    // evaluate function across grid
+    for (let j = 0; j < m; ++j) {
+      for (let i = 0; i < n; ++i) {
+        grid[j * n + i] = rank_turbulence(i, j, alpha);
+      }
+    }
+    
+    grid.x = -q;
+    grid.y = -q;
+    grid.k =  q;
+    grid.n =  n;
+    grid.m =  m;
+    
+    let grid_rev = grid.reverse()
+    
+    // Converts from grid coordinates (indexes) to screen coordinates (pixels).
+    const transform = ({type, value, coordinates}) => {
+      return {type, value, coordinates: coordinates.map(rings => {
+        return rings.map(points => {
+          return points.map(([x, y]) => ([
+            grid_rev.x + grid_rev.k * x + 3,
+            grid_rev.y + grid_rev.k * y + 3
+          ]));
+        });
+      })};
+    }
+    
+    let contour = d3.contours().size([grid_rev.n, grid_rev.m]).thresholds(10)
+    
+    return contour(grid_rev).map(d => transform(d)); 
   }
   
   let contour = d3.contours().size([grid_rev.n, grid_rev.m]).thresholds(10)
