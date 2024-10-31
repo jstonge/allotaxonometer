@@ -299,3 +299,15 @@ export default function DiamondChart(dat, alpha, maxlog10, passed_svg) {
   
   return g.node();
 }
+
+function logspace(a, b, n = 50) {
+  const start = Math.pow(10, a);
+  const step = (b - a) / (n - 1);
+  const result = [];
+
+  for (let i = 0; i < n; i++) {
+      result.push(Math.pow(10, a + i * step));
+  }
+
+  return result;
+}
