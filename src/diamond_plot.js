@@ -136,7 +136,7 @@ export default function DiamondChart(dat, alpha, passed_svg) {
       }
   }
 
-  get_contours = function contour(visHeight, alpha) {
+  function get_contours(visHeight, alpha) {
     // see https://observablehq.com/@d3/contours
     
     const q = 4; // The level of detail, e.g., sample every 4 pixels in x and y.
