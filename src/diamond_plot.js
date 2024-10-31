@@ -2,7 +2,7 @@ import * as d3 from "d3";
 
 import { rin } from "./utils_helpers.js";
 
-export default function DiamondChart(dat, alpha, maxlog10) {
+export default function DiamondChart(dat, alpha, maxlog10, passed_svg) {
 
     function alphaNormType2(x1, x2, alpha) {
     if (alpha < 0) {
@@ -190,10 +190,12 @@ export default function DiamondChart(dat, alpha, maxlog10) {
       .thresholds(heights)
       (values);
 
-  // SVG container and transformations
-  const svg = d3.create("svg");
+  // ADDED 
+  // const svg = d3.create("svg")
 
-  const g = svg.attr("id", "myGraph")
+  // SWAP THOSE LINES
+  // const g = svg.attr("id", "myGraph") 
+  const g = passed_svg  //.append('g')
     .attr('transform', `translate(${ visWidth / 2.5}, -25) rotate(135) scale(1,-1)`)
     .attr('height', visHeight + margin.top + margin.bottom)
     .attr('width', visWidth)
