@@ -2,16 +2,38 @@ import * as d3 from "d3";
 
 import { rin } from "./utils_helpers.js";
 
-export default function DiamondChart(dat, alpha, passed_svg) {
+export default function DiamondChart(dat, alpha) {
 
-  // GLOBAL CONSTANT
+  function alphaNormType2(x1, x2, alpha) {
+  if (alpha < 0) {
+      throw new Error('alpha must be >= 0');
+  } else if (alpha === Infinity) {
+      // Handle alpha = Inf by finding the element-wise max
+      return x1.map((row, i) => row.map((val, j) => {
+          const maxVal = Math.max(val, x2[i][j]);
+          return val === x2[i][j] ? 0 : maxVal;
+      }));
+  } else if (alpha === 0) {
+      // Handle alpha = 0 by computing log divergence element-wise
+      return x1.map((row, i) => row.map((val, j) => Math.abs(Math.log(val / x2[i][j]))));
+  } else {
+      // General case for alpha > 0
+      const prefactor = (alpha + 1) / alpha;
+      const power = 1 / (alpha + 1);
+      return x1.map((row, i) => row.map((val, j) =>
+          prefactor * Math.abs(Math.pow(val, alpha) - Math.pow(x2[i][j], alpha)) ** power
+      ));
+  }
+}
+const maxlog10 = Math.ceil(d3.max([Math.log10(d3.max(me[0].ranks)), Math.log10(d3.max(me[1].ranks))]))
+const Ninset = Math.pow(10, 3)
+const tmpr1 = logspace(0, maxlog10, Ninset);
+const tmpr2 = logspace(0, maxlog10, Ninset);
+const x1 = tmpr1.map(val => Array(tmpr1.length).fill(Math.pow(val, -1)));
+const x2 = Array(tmpr1.length).fill(tmpr2.map(val => Math.pow(val, -1)));
 
-  const visHeight = 612
-  const visWidth = 612
-  const canvas_mult_size = 1.02
+  const  deltamatrix =  alphaNormType2(x1, x2, alpha).map(row => row.map(val => val / rtd.normalization));
 
-  // HELPER FUNCTIONS -----------------------------
-  
   const draw_polygon = (g, tri_coords, bg_color) => g
       .append("polygon")
        .attr("fill",bg_color)
@@ -92,7 +114,27 @@ export default function DiamondChart(dat, alpha, passed_svg) {
           .attr("x2", visWidth) // x2 == - ?  shorter xlines on the right :  longer xlines on the right
       );
   
-
+  const Tooltips = (g, tooltip) => g
+    .on("mouseover", (event, d) => {
+      d3.select(event.target)
+        .style("stroke-width", "2px");
+      tooltip.style("visibility", "visible");
+      tooltip.html(d.value !== 0 ? `Top types: ${d.types.split(",").length < 50 ?
+        d3.shuffle(d.types.split(",")) :
+          [d3.shuffle(d.types.split(",").slice(0,50))].concat([" ..."])}` : null);
+  
+    })
+    .on("mousemove", (event, d) => {
+      tooltip
+        .style("top", event.clientY - 10 + "px")
+        .style("left", event.clientX + 10 + "px");
+    })
+    .on("mouseout", (event, d) => {
+      d3.select(event.target)
+        .style("stroke-width",  (d) => d.value === 0 ? 0 : 0.3);
+      tooltip.style("visibility", "hidden");
+    })
+  
   function chosen_types(dat, ncells) {
     const cumbin = d3.range(0, ncells, 1.5)
     const relevant_types = []
@@ -113,59 +155,6 @@ export default function DiamondChart(dat, alpha, passed_svg) {
     }
     return relevant_types
   }
-
-  function rank_turbulence(x, y, alpha) {
-    if (alpha === Infinity) {
-        return x == y ? 0 : Math.max(x)
-    } else if (alpha == 0) {
-      // cheating a little bit
-      return (1+1) / 1 * Math.abs(x**1 - y**1)**(1. / (1+1))
-    } else {
-        return (alpha+1) / alpha * Math.abs(x**alpha - y**alpha)**(1. / (alpha+1))
-      }
-  }
-  
-  function get_contours() {
-    // see https://observablehq.com/@d3/contours
-    
-    const q = 4; // The level of detail, e.g., sample every 4 pixels in x and y.
-    const x0 = -1, x1 = visHeight + q - 2;
-    const y0 = -1, y1 = visHeight + q - 2;
-    const n = Math.ceil((x1 - x0) / q);
-    const m = Math.ceil((y1 - y0) / q);
-    const grid = new Array(n * m);
-  
-    // evaluate function across grid
-    for (let j = 0; j < m; ++j) {
-      for (let i = 0; i < n; ++i) {
-        grid[j * n + i] = rank_turbulence(i, j, alpha);
-      }
-    }
-    
-    grid.x = -q;
-    grid.y = -q;
-    grid.k =  q;
-    grid.n =  n;
-    grid.m =  m;
-    
-    let grid_rev = grid.reverse()
-    
-    // Converts from grid coordinates (indexes) to screen coordinates (pixels).
-    const transform = ({type, value, coordinates}) => {
-      return {type, value, coordinates: coordinates.map(rings => {
-        return rings.map(points => {
-          return points.map(([x, y]) => ([
-            grid_rev.x + grid_rev.k * x + 3,
-            grid_rev.y + grid_rev.k * y + 3
-          ]));
-        });
-      })};
-    }
-    
-    let contour = d3.contours().size([grid_rev.n, grid_rev.m]).thresholds(10)
-    
-    return contour(grid_rev).map(d => transform(d)); 
-  }
   
   // ------------------------------------
 
@@ -183,18 +172,35 @@ export default function DiamondChart(dat, alpha, passed_svg) {
 
   const color_scale = d3.scaleSequentialLog().domain([max_val, 1]).interpolator(d3.interpolateInferno)
 
-  // ADDED 
-  // const svg = d3.create("svg")
 
-  // SWAP THOSE LINES
-  // const g = svg.attr("id", "myGraph") 
-  const g = passed_svg  //.append('g')
+  // Define the number of contours you want
+  const Ncontours = 10;
+
+  // Create evenly spaced indices and heights for contours
+  const contourIndices = d3.range(1, tmpr1.length, tmpr1.length / (Ncontours + 2)).map(Math.round);
+  const heights = contourIndices.slice(1, -1).map(index => deltamatrix[deltamatrix.length - 1][index]);
+
+  // Prepare data for contours
+  const values = deltamatrix.flat();
+  const width = deltamatrix[0].length;
+  const height = deltamatrix.length;
+
+  // Generate contours using D3
+  const contours = d3.contours()
+      .size([width, height])
+      .thresholds(heights)
+      (values);
+
+  // SVG container and transformations
+  const svg = d3.create("svg");
+
+  const g = svg.attr("id", "myGraph")
     .attr('transform', `translate(${ visWidth / 2.5}, -25) rotate(135) scale(1,-1)`)
     .attr('height', visHeight + margin.top + margin.bottom)
     .attr('width', visWidth)
     .attr("viewBox", [0-50, 0, visWidth + margin.top+50, visHeight]);
 
-  // Xaxis - see below for the functions
+
   g.append('g')
     .call(xAxis, xyScale)
     .call(xAxisLab, "Rank r", visWidth, 40) // there must be an easier way to breaklines!?!
@@ -231,17 +237,27 @@ export default function DiamondChart(dat, alpha, passed_svg) {
   draw_polygon(g, blue_triangle, "#89CFF0")
   draw_polygon(g, grey_triangle, "grey")
 
-  // contours  
+
+  svg.append("clipPath")
+      .attr("id", "clip")
+    .append("rect")
+      .attr("width", visWidth)
+      .attr("height", visHeight);
+
+  // Append contours to SVG
   g.append("g")
       .attr("fill", "none")
       .attr("stroke", "grey")
       .attr("fill-opacity", 0.1)
+      .attr("clip-path", "url(#clip)")
     .selectAll("path")
-    .data(get_contours())
+    .data(contours)
     .join("path")
-      .attr("d", d3.geoPath());
+      .attr("d", d3.geoPath())
+      .attr("stroke-width", 0.9)
+      .attr("stroke-opacity", 0.5);
 
-  // Heatmap
+     // Heatmap
   const cells = g
       .selectAll('rect').data(dat).enter()
       .append('rect')
@@ -279,5 +295,6 @@ export default function DiamondChart(dat, alpha, passed_svg) {
    .attr("x2", visWidth-7)
    .attr("y2", visHeight-7)
 
-  return g.node()
+  
+  return g.node();
 }
