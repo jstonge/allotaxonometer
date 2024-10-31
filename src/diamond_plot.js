@@ -214,7 +214,7 @@ export default function DiamondChart(dat, deltamatrix, passed_svg) {
   draw_polygon(g, grey_triangle, "grey")
 
 
-  svg.append("clipPath")
+  passed_svg.append("clipPath")
       .attr("id", "clip")
     .append("rect")
       .attr("width", visWidth)
