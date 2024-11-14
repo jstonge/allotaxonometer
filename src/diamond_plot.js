@@ -4,11 +4,11 @@ import { rin } from "./utils_helpers.js";
 
 
 function filter_contours(tmpcontours, Ninset, maxlog10) {
-  
+
   const chart2val = d3.scaleLinear()
-    .domain([0, Ninset]) // unit: km
-    .range([0, maxlog10]) // unit: pixels
-    
+  .domain([0, Ninset]) // unit: km
+  .range([0, maxlog10]) // unit: pixels
+  
   let out = []  
   // Extract Coordinates:
   tmpcontours.forEach((contour) => {
@@ -48,6 +48,7 @@ function make_grid(Ninset, tmpr1, tmpr2, alpha) {
   // calculation to work with a flat array. 
   // Instead we flatten that List of list later.
 
+  
   function alpha_norm_type2(x1, x2) {
         const prefactor = (alpha + 1) / alpha;
         const power = 1 / (alpha + 1);
@@ -77,10 +78,9 @@ function make_grid(Ninset, tmpr1, tmpr2, alpha) {
   return deltamatrix;
 };
 
-
 function get_contours(alpha, maxlog10) {
   // only for alpha != 0 and alpha != Infinity
-  
+
   const Ninset = 10 ** 3
   const tmpr1 = d3.range(0, 1000).map(d => Math.pow(10, d / 999 * 5));
   const tmpr2 = d3.range(0, 1000).map(d => Math.pow(10, d / 999 * 5));
@@ -91,6 +91,7 @@ function get_contours(alpha, maxlog10) {
     .domain([0, Ncontours + 1])
     .range([1, tmpr1.length]);
 
+  
   const contour_indices = d3.range(Ncontours + 2).map(i => Math.round(scale(i)));
   const grid = make_grid(Ninset, tmpr1, tmpr2, alpha)
   const indices = contour_indices.slice(1, -1);
@@ -113,7 +114,7 @@ function get_contours(alpha, maxlog10) {
   
 }
 
-export default function DiamondChart(dat, deltamatrix, alpha, maxlog10, passed_svg) {
+export default function DiamondChart(dat, alpha, maxlog10, passed_svg) {
 
   const visHeight = 612
   const visWidth = 612
@@ -257,60 +258,42 @@ export default function DiamondChart(dat, deltamatrix, alpha, maxlog10, passed_s
 
   const color_scale = d3.scaleSequentialLog().domain([max_val, 1]).interpolator(d3.interpolateInferno)
 
-
-  // Define the number of contours you want
-  const Ncontours = 10;
-
-  // Create evenly spaced indices and heights for contours
-  const contourIndices = d3.range(1, deltamatrix.length, deltamatrix.length / (Ncontours + 2)).map(Math.round);
-  const heights = contourIndices.slice(1, -1).map(index => deltamatrix[deltamatrix.length - 1][index]);
-
-  // Prepare data for contours
-  const values = deltamatrix.flat();
-  const width = deltamatrix[0].length;
-  const height = deltamatrix.length;
-
-  // Generate contours using D3
-  const contours = d3.contours()
-      .size([width, height])
-      .thresholds(heights)
-      (values);
-
+  
   // ADDED 
   // const svg = d3.create("svg")
-
+  
   // SWAP THOSE LINES
   // const g = svg.attr("id", "myGraph") 
   const g = passed_svg  //.append('g')
-    .attr('transform', `translate(${ visWidth / 2.5}, -25) rotate(135) scale(1,-1)`)
-    .attr('height', visHeight + margin.top + margin.bottom)
-    .attr('width', visWidth)
-    .attr("viewBox", [0-50, 0, visWidth + margin.top+50, visHeight]);
-
-
+  .attr('transform', `translate(${ visWidth / 2.5}, -25) rotate(135) scale(1,-1)`)
+  .attr('height', visHeight + margin.top + margin.bottom)
+  .attr('width', visWidth)
+  .attr("viewBox", [0-50, 0, visWidth + margin.top+50, visHeight]);
+  
+  
   g.append('g')
-    .call(xAxis, xyScale)
-    .call(xAxisLab, "Rank r", visWidth, 40) // there must be an easier way to breaklines!?!
-    .call(xAxisLab, "for", visWidth, 60)
-    .call(xAxisLab, `Girls 1885`, visWidth, 80)
-    .call(xAxisLab, "more →", visWidth-200, 40, .4)
-    .call(xAxisLab, "frequent", visWidth-200, 60, .4)
-    .call(xAxisLab, "← less", visWidth+200, 40, .4)
-    .call(xAxisLab, "frequent", visWidth+200, 60, .4)
-    .call(xGrid, xyScaleLin, ncells);
-
+  .call(xAxis, xyScale)
+  .call(xAxisLab, "Rank r", visWidth, 40) // there must be an easier way to breaklines!?!
+  .call(xAxisLab, "for", visWidth, 60)
+  .call(xAxisLab, `Girls 1885`, visWidth, 80)
+  .call(xAxisLab, "more →", visWidth-200, 40, .4)
+  .call(xAxisLab, "frequent", visWidth-200, 60, .4)
+  .call(xAxisLab, "← less", visWidth+200, 40, .4)
+  .call(xAxisLab, "frequent", visWidth+200, 60, .4)
+  .call(xGrid, xyScaleLin, ncells);
+  
   // Yaxis - see below for the functions
   g.append('g')
-    .call(yAxis, xyScale)
-    .call(yAxisLab, "Rank r", 0, 40)
-    .call(yAxisLab, "for", 0, 60)
-    .call(yAxisLab, `Girls 1890`, 0, 80)
-    .call(yAxisLab, "less →", 200, 40, .4)
-    .call(yAxisLab, "frequent", 200, 60, .4)
-    .call(yAxisLab, "← more", -200, 40, .4)
-    .call(yAxisLab, "frequent", -200, 60, .4)
-    .call(yGrid, xyScaleLin, ncells);
-
+  .call(yAxis, xyScale)
+  .call(yAxisLab, "Rank r", 0, 40)
+  .call(yAxisLab, "for", 0, 60)
+  .call(yAxisLab, `Girls 1890`, 0, 80)
+  .call(yAxisLab, "less →", 200, 40, .4)
+  .call(yAxisLab, "frequent", 200, 60, .4)
+  .call(yAxisLab, "← more", -200, 40, .4)
+  .call(yAxisLab, "frequent", -200, 60, .4)
+  .call(yGrid, xyScaleLin, ncells);
+  
   // Background polygons
   const grey_triangle = [
     {"x":max_xy, "y":max_xy}, {"x":0, "y":0}, {"x":max_xy, "y":0}
@@ -320,11 +303,12 @@ export default function DiamondChart(dat, deltamatrix, alpha, maxlog10, passed_s
     {"x":max_xy, "y":max_xy}, {"x":0, "y":0}, {"x":0, "y":max_xy}
   ].map(d => [xy(d.x)*canvas_mult_size, xy(d.y)*canvas_mult_size].join(',')).join(" ")
   
-
+  
   draw_polygon(g, blue_triangle, "#89CFF0")
   draw_polygon(g, grey_triangle, "grey")
-
-  const mycontours = get_contours(alpha, maxlog10)
+  
+  // Generate contours using D3
+  const contours = get_contours(alpha, maxlog10)
 
   passed_svg.append("clipPath")
       .attr("id", "clip")
