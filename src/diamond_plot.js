@@ -6,7 +6,7 @@ const visHeight = 612
 const visWidth = 612
 const canvas_mult_size = 1.02
 
-export default function DiamondChart(dat, alpha, maxlog10, passed_svg) {
+export default function DiamondChart(dat, alpha, maxlog10, divnorm, passed_svg) {
   
   const margin = ({ top: 200, left: 0, right: 140, bottom: 140 })
   const ncells = d3.max(dat, d => d.x1)
@@ -74,7 +74,7 @@ export default function DiamondChart(dat, alpha, maxlog10, passed_svg) {
   
   // CONTOUR LINES
 
-  const mycontours = get_contours(alpha, maxlog10)
+  const mycontours = get_contours(alpha, maxlog10, divnorm)
 
   passed_svg.append("clipPath")
       .attr("id", "clip")
@@ -146,11 +146,12 @@ export default function DiamondChart(dat, alpha, maxlog10, passed_svg) {
 function filter_contours(tmpcontours, Ninset, maxlog10) {
 
   const chart2val = d3.scaleLinear()
-  .domain([0, Ninset]) // unit: km
-  .range([0, maxlog10]) // unit: pixels
+  .domain([0, Ninset])
+  .range([0, maxlog10])
   
   let out = []  
-  // Extract Coordinates:
+  // Extract Coordinates from contour object to wrangle it
+  // Necessary because contours close to the diagonal are messy
   tmpcontours.forEach((contour) => {
     contour.coordinates.forEach((pair, i) => {
       const tmpr1 = pair[0].map(d => d[0]); // x-coordinates
@@ -168,7 +169,8 @@ function filter_contours(tmpcontours, Ninset, maxlog10) {
         const tmpxrot = Math.abs(x2 - x1) / Math.sqrt(2);
         
         // If the condition is met, add the coordinate pair [x1, x2] to `filteredPairs`
-        if (Math.abs(tmpxrot) >= 0.1 & x1 != 5 & x2 != 0 & x1 != 0 & x2 != 5) {
+        // This is super hacky. I dunnow when it will break.
+        if (Math.abs(tmpxrot) >= 0.1 & x1 != maxlog10 & x2 != 0 & x1 != 0 & x2 != maxlog10) {
           filteredPairs.push([x1, x2]);
         }
       }
@@ -182,11 +184,12 @@ function filter_contours(tmpcontours, Ninset, maxlog10) {
 return out
 }
 
-function make_grid(Ninset, tmpr1, tmpr2, alpha) {
+function make_grid(Ninset, tmpr1, tmpr2, alpha, divnorm) {
   // No matrix in js :(
   // we could try to do like in the original d3.contour, where they do
   // calculation to work with a flat array. 
   // Instead we flatten that List of list later.
+  // Probably we could use something like tensorflowjs.
 
   
   function alpha_norm_type2(x1, x2) {
@@ -201,6 +204,7 @@ function make_grid(Ninset, tmpr1, tmpr2, alpha) {
   for (let i = 0; i < Ninset; i++) {
     for (let j = 0; j < Ninset; j++) {
         const divElem = alpha_norm_type2(1 / tmpr1[i], 1 / tmpr2[j]);
+        // const normalization = 16813.189409617593; // Harcoded from Boys 1968 vs 2018 with alpha=0.08
         const normalization = 16813.189409617593; // Harcoded from Boys 1968 vs 2018 with alpha=0.08
         deltamatrix[i][j] = divElem / normalization;
     }
@@ -218,7 +222,7 @@ function make_grid(Ninset, tmpr1, tmpr2, alpha) {
   return deltamatrix;
 };
 
-function get_contours(alpha, maxlog10) {
+function get_contours(alpha, maxlog10, divnorm) {
   // only for alpha != 0 and alpha != Infinity
 
   const Ninset = 10 ** 3
