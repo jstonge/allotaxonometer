@@ -4,24 +4,24 @@ import * as d3 from "d3";
 // Released under the ISC license.
 // https://observablehq.com/@d3/diverging-bar-chart
 export default function BalanceChart(data, {
-    x = d => d, // given d in data, returns the (quantitative) x-value
-    y = (d, i) => i, // given d in data, returns the (ordinal) y-value
-    title, // given d in data, returns the title text
-    marginTop = 30, // top margin, in pixels
-    marginRight = 40, // right margin, in pixels
-    marginBottom = 10, // bottom margin, in pixels
-    marginLeft = 40, // left margin, in pixels
-    width = 640, // outer width of chart, in pixels
-    height, // the outer height of the chart, in pixels
-    xType = d3.scaleLinear, // type of x-scale
-    xDomain, // [xmin, xmax]
-    xRange = [marginLeft, width - marginRight], // [left, right]
-    xFormat, // a format specifier string for the x-axis
-    xLabel, // a label for the x-axis
-    yPadding = 0.5, // amount of y-range to reserve to separate bars
-    yDomain, // an array of (ordinal) y-values
-    yRange, // [top, bottom]
-    colors = d3.schemePiYG[3] // [negative, …, positive] colors
+  x = d => d, // given d in data, returns the (quantitative) x-value
+  y = (d, i) => i, // given d in data, returns the (ordinal) y-value
+  title, // given d in data, returns the title text
+  marginTop = 0, // top margin, in pixels
+  marginRight = 40, // right margin, in pixels
+  marginBottom = 10, // bottom margin, in pixels
+  marginLeft = 40, // left margin, in pixels
+  width = 640, // outer width of chart, in pixels
+  height, // the outer height of the chart, in pixels
+  xType = d3.scaleLinear, // type of x-scale
+  xDomain, // [xmin, xmax]
+  xRange = [marginLeft, width - marginRight], // [left, right]
+  xFormat, // a format specifier string for the x-axis
+  xLabel, // a label for the x-axis
+  yPadding = 0.5, // amount of y-range to reserve to separate bars
+  yDomain, // an array of (ordinal) y-values
+  yRange, // [top, bottom]
+  colors = d3.schemePiYG[3] // [negative, …, positive] colors
   } = {}, passed_svg) {
     // Compute values.
     const X = d3.map(data, x);

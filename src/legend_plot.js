@@ -1,17 +1,13 @@
 import * as d3 from "d3";
 
 export default function myLegend(color, {
-    tickSize = 6,
-    max_count_log = 4,
-    width = 320, 
-    height = 44 + tickSize,
-    marginTop = 18,
-    marginRight = 0,
-    marginBottom = 16 + tickSize,
-    marginLeft = 0,
-    ticks = width / 64,
-    tickFormat,
-    tickValues
+  tickSize = 6,
+  max_count_log = 4,
+  width = 320, 
+  height = 44 + tickSize,
+  marginTop = 18,
+  marginBottom = 16 + tickSize,
+  marginLeft = 0,
   } = {}, passed_svg) {
   
   
@@ -23,7 +19,6 @@ export default function myLegend(color, {
         .style("overflow", "visible")
         .style("display", "block");
   
-    let tickAdjust = g => g.selectAll(".tick line").attr("y1", marginTop + marginBottom - height);
     
     // let x;
     let x = d3.scaleBand()
@@ -41,8 +36,7 @@ export default function myLegend(color, {
        .attr("fill", color)
        .attr("transform", "rotate(-90) translate(-70,0)");
   
-    // tickAdjust = () => {};
-  
+
     // let x2;
     let x2 = d3.scaleBand()
        .domain(d3.range(max_count_log).map(i => 10**i).sort(d3.descending))
