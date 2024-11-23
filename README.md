@@ -1,4 +1,11 @@
-# ALLotaxonometry for all: Open-source intuitive interactive implementation of the allotaxonometer for widespread public use
+
+<img width="100%" alt="pipeline" src="https://github.com/user-attachments/assets/af9642a4-7426-4618-855c-c4bbe573607d">
+<p>
+
+- https://observablehq.com/@jstonge/allotaxonometer-for-all-exp
+- https://allotaxp.vercel.app/
+- :octocat: https://github.com/jstonge/allotaxp
+- :octocat: https://github.com/carterwward/py-allotax
 
 The primary purpose of the alloxonometer in general is to calculate and visualize the difference between any two Zipfian ranked lists of components. This package provides the utilities to facilitate the creationg of the allotaxonometer in `d3.js`
 
