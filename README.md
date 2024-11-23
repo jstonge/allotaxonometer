@@ -1,5 +1,5 @@
 
-<img width="100%" alt="pipeline" src="https://github.com/user-attachments/assets/af9642a4-7426-4618-855c-c4bbe573607d">
+<img width="100%" alt="pipeline" src="https://github.com/user-attachments/assets/11ebfb8d-95d7-43f1-b95d-2f14bf4dac86">
 <p>
 
 - https://observablehq.com/@jstonge/allotaxonometer-for-all-exp
