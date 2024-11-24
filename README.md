@@ -2,12 +2,10 @@
 <img width="100%" alt="pipeline" src="https://github.com/user-attachments/assets/eee02d08-9c76-4a6d-a103-812d7cac81a1">
 <p>
 
-- https://observablehq.com/@jstonge/allotaxonometer-for-all-exp
-- https://allotax.vercel.app/
-- :octocat: https://github.com/jstonge/allotax
-- :octocat: https://github.com/carterwward/py-allotax
+- Visit our [single-page web application](https://allotax.vercel.app/) to try it out online ([:octocat: github](https://github.com/jstonge/allotax))!
+- Use [py-allotax](https://github.com/carterwward/py-allotax) to use allotaxonometry at scale ([:octocat: github](https://github.com/carterwward/py-allotax))
 
-The primary purpose of the alloxonometer in general is to calculate and visualize the difference between any two Zipfian ranked lists of components. This package provides the utilities to facilitate the creationg of the allotaxonometer in `d3.js`
+`Alloxonometer.js` is a lightweigt Javascript package for combining pairs of Zipfian ranked lists of components and provide [divergence metrics](https://compstorylab.org/allotaxonometry/papers/rank-turbulence-divergence/).
 
 ## CSV input
 
