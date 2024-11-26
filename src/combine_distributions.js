@@ -12,7 +12,7 @@ function buildMixedElems(elem1, elem2) {
  }
  
 // Combine elements and return a combined array containing counts, ranks, probs, and totalunique
-function combElems(elem1, elem2) {
+export default function combElems(elem1, elem2) {
    const mixedelem = buildMixedElems(elem1, elem2)  // build mixed elements array
    const enum_list = [elem1, elem2] // list containing elem1 and elem2
 
@@ -42,6 +42,3 @@ function combElems(elem1, elem2) {
 
    return mixedelem  // return mixedelem array
  }
-    
-export { combElems }
-    

@@ -83,7 +83,7 @@ function diamond_counts(mixedelements) {
 
 
 // we expect wordshift to be of the form { divergence_elements: [ length of type ], normalization: float }
-export default function diamond(mixedelements, wordshift) {
+export default function diamond_count(mixedelements, wordshift) {
   
   // let rank_turbulence = rank_turbulence_divergence(mixedelements, alpha)
   let deltas = wordshift["divergence_elements"]

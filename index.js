@@ -1,15 +1,11 @@
-import { combElems, myDiamond, wordShift_dat, balanceDat } from './src/combine_distributions.js'
 import { descending } from "d3-array";
+
+import combElems from './src/combine_distributions.js'
 import rank_turbulence_divergence from './src/rank_turbulence_divergence.js'
-import diamond from './diamond_count.js'
+import diamond_count from './src/diamond_count.js'
+
 import { getUnions, setdiff, rin, matlab_sort, tiedrank, which, rank_maxlog10, zeros } from './src/utils_helpers.js'
-import rank_turbulence_divergence from "./rank_turbulence_divergence.js";
 
-
-function RTD(me, alpha) { return rank_turbulence_divergence(me, alpha) }
-
-// the wordshift argument is a metric like rank_turbulence_divergence  
-function myDiamond(me, wordshift) { return diamond(me, wordshift) }
 
 function balanceDat(elem1, elem2) {
   const types_1 = elem1.map(d => d.types)
@@ -50,8 +46,8 @@ export{
   rin,
   tiedrank,
   combElems, 
-  RTD, 
-  myDiamond, 
+  rank_turbulence_divergence, 
+  diamond_count, 
   wordShift_dat, 
   balanceDat,
   zeros
