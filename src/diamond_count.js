@@ -37,18 +37,13 @@ function diamond_counts(mixedelements) {
   for (var i=0; i < Ncells; i++) { // Ncells is the length of the square matrix (note 1-d length not total number of cells)
     for (var j=0; j < Ncells; j++) { 
       
-      //const idx_me = existing_coords.indexOf(`(${i}, ${j})`) 
-      
       // Does coords (i,j) are in existing_coords? 
       if ( existing_coords.indexOf(`(${i}, ${j})`)  === -1) {  
         out.push({ types: "", x1: i, y1: j, rank1: "", rank2: "" }) // if it doesnt exist, thats a blank cell, make the data there blank
       } else { //if that coordinate is full of data
-        //console.log(rin(existing_coords, `(${i}, ${j})`))
-        
         const indices_coords_in_exist_coords = which(rin(existing_coords, `(${i}, ${j})`)) //rin(arr1, arr2) = [foo is in arr2 for foo in arr1]. rin([3, 4, 5], [3]) = [true, false, false], then the which is returning the indices of the elements which are true. So in the end this is getting all the indices where '${i}, ${j})' appears in existing_coords. When there are ties, the same coordinate appears multiple times in a row in exisiting_coords and so indices_coords_in_exist_coords will be an array with multiple indices
 
         for (let z=0; z < indices_coords_in_exist_coords.length; z++ ) {
-        // for (const idx in indices_coords_in_exist_coords) { // iterate through the short list of indices where that coord shows up
           out.push({
             types: mixedelements[0]['types'][indices_coords_in_exist_coords[z]],
             x1: i,  
@@ -84,8 +79,7 @@ function diamond_counts(mixedelements) {
 
 // we expect wordshift to be of the form { divergence_elements: [ length of type ], normalization: float }
 export default function diamond_count(mixedelements, wordshift) {
-  
-  // let rank_turbulence = rank_turbulence_divergence(mixedelements, alpha)
+
   let deltas = wordshift["divergence_elements"]
   let sorted_div = matlab_sort(deltas, true)
   let indices_deltas = sorted_div.orig_idx
