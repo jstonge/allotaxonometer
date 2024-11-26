@@ -1,14 +1,14 @@
 
-<img width="100%" alt="pipeline" src="https://github.com/user-attachments/assets/11ebfb8d-95d7-43f1-b95d-2f14bf4dac86">
+<img width="100%" alt="pipeline" src="https://github.com/user-attachments/assets/eee02d08-9c76-4a6d-a103-812d7cac81a1">
 <p>
 
-- https://observablehq.com/@jstonge/allotaxonometer-for-all-exp
-- https://allotaxp.vercel.app/
-- :octocat: https://github.com/jstonge/allotaxp
-- :octocat: https://github.com/carterwward/py-allotax
+- Visit our [single-page web application](https://allotax.vercel.app/) to try it out online ([:octocat: github](https://github.com/jstonge/allotax))!
+- Use [py-allotax](https://github.com/carterwward/py-allotax) to use allotaxonometry at scale ([:octocat: github](https://github.com/carterwward/py-allotax))
 
-The primary purpose of the alloxonometer in general is to calculate and visualize the difference between any two Zipfian ranked lists of components. This package provides the utilities to facilitate the creationg of the allotaxonometer in `d3.js`
-
+`Alloxonometer.js` is a lightweigt Javascript package for combining pairs of Zipfian ranked lists of components and provide [divergence metrics](https://compstorylab.org/allotaxonometry/papers/rank-turbulence-divergence/). The library performs the divergence calculations among two systems, which will typically be consumed by the following 2 tools to visualize results.
+## Use cases and install
+- Explore systems and formulate research questions: we recommend starting with the web app...
+- Running multiple or larger scale analyses: we recommend using the py-allotax, which details its install instructions, details the required data format, and provides examples in its repo.
 ## CSV input
 
 The allotaxonometer expects 2 tables in the following form:
@@ -21,35 +21,6 @@ The allotaxonometer expects 2 tables in the following form:
 |  3 | George  |     4458 |          1161 |  0.0402 |
 |  4 | Charles |     4061 |          1161 |  0.0366 |
 
-## Layers of meaning
-
-
-<p>
-<img width="100%" alt="Screenshot 2024-10-14 at 7 03 01 AM" src="https://github.com/user-attachments/assets/9a98d4e5-7a11-47ad-8d71-5424de755daa">
-<figcaption>FIG 1 - https://arxiv.org/pdf/2002.09770</figcaption>
-</p>
-
- - [x] A. Legend bin rank-rank pairs
- - [x] B. Types at the top of the diamond rank high for both systems
- - [x] C. Moving down, turbulence starts to become noticeable around $r = 10^2$
- - [x] D. Other types that are becoming significant
- - [x] E. Separated lines and points at the bottom of the histogram arise from logarithmic spacing
- - [x] F. Least important and least differentiating types appear at the bottom of the histogram
- - [x] G. Balances at the bottom right of the rank-rank histogram.
- - [x] H,I,J. show examples of three extremes of how systems might compare on rank-rank histograms
-
-<p>
-<img width="100%" alt="Fig2" src="https://github.com/user-attachments/assets/69dd9029-eacc-4b12-84eb-fca01bf40491">
-<figcaption>FIG 2 - https://arxiv.org/pdf/2002.09770</figcaption>
-</p>
-
- - [x] A. Choosing the scale of the instrument
- - [x] B. Contour lines to track $\alpha$
- - [ ] C.a. Inset showing the contour lines
- - [x] C.b. Opacity of types proportional to instrument score
- - [x] D. Top words ranked according to divergence contribution  (Rank System 1 ⇋ Rank System 2)
- - [ ] E. Exclusive types indicated by a directed open triangle
- - [ ] F. Percentage contribution to th divergence score from each system
 
 ## Paper data
 

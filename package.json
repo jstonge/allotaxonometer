@@ -1,8 +1,8 @@
 {
   "name": "allotaxonometer",
-  "version": "1.1.11",
+  "version": "1.1.17",
   "description": "",
-  "main": "index.js",
+  "main": "./src/index.js",
   "type": "module",
   "scripts": {
     "build": "esbuild index.js --bundle --outfile=out.js",
@@ -12,10 +12,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "d3": "^7.9.0",
     "d3-array": "^3.2.1",
     "d3-axis": "^3.0.0",
     "d3-color": "^3.1.0",
+    "d3-contour": "^4.0.2",
     "d3-fetch": "^3.0.1",
+    "d3-geo": "^3.1.1",
     "d3-scale": "^4.0.2",
     "d3-scale-chromatic": "^3.0.0",
     "d3-selection": "^3.0.0",
