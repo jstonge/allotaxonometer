@@ -6,7 +6,9 @@
 - Use [py-allotax](https://github.com/carterwward/py-allotax) to use allotaxonometry at scale ([:octocat: github](https://github.com/carterwward/py-allotax))
 
 `Alloxonometer.js` is a lightweigt Javascript package for combining pairs of Zipfian ranked lists of components and provide [divergence metrics](https://compstorylab.org/allotaxonometry/papers/rank-turbulence-divergence/). The library performs the divergence calculations among two systems, which will typically be consumed by the following 2 tools to visualize results.
-
+## Use cases and install
+- Explore systems and formulate research questions: we recommend starting with the web app...
+- Running multiple or larger scale analyses: we recommend using the py-allotax, which details its install instructions, details the required data format, and provides examples in its repo.
 ## CSV input
 
 The allotaxonometer expects 2 tables in the following form:
