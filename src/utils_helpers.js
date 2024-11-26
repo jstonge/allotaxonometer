@@ -1,6 +1,4 @@
-export { matlab_sort, rin, rank_maxlog10, tiedrank, which, zeros, getUnions, setdiff, balanceDat, wordShift_dat } ;
-
-import { descending } from "d3-array";
+export { matlab_sort, rin, rank_maxlog10, tiedrank, which, zeros, getUnions, setdiff } ;
 
 // Takes arrays, returns a Set object containing the union of both arrays
  function getUnions(x,y) {
