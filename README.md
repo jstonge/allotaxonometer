@@ -5,7 +5,7 @@
 - Visit our [single-page web application](https://allotax.vercel.app/) to try it out online ([:octocat: github](https://github.com/jstonge/allotax))!
 - Use [py-allotax](https://github.com/carterwward/py-allotax) to use allotaxonometry at scale ([:octocat: github](https://github.com/carterwward/py-allotax))
 
-`Alloxonometer.js` is a lightweigt Javascript package for combining pairs of Zipfian ranked lists of components and provide [divergence metrics](https://compstorylab.org/allotaxonometry/papers/rank-turbulence-divergence/).
+`Alloxonometer.js` is a lightweigt Javascript package for combining pairs of Zipfian ranked lists of components and provide [divergence metrics](https://compstorylab.org/allotaxonometry/papers/rank-turbulence-divergence/). The library performs the divergence calculations among two systems, which will typically be consumed by the following 2 tools to visualize results.
 
 ## CSV input
 
