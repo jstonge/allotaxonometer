@@ -98,6 +98,3 @@ function zeros(length){
   let empty_mat = createArray(length,length)
   return Array.from(empty_mat, arr => arr.fill(0))
 }
-
-
-
