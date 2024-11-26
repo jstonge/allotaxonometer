@@ -1,6 +1,7 @@
 import combElems from './src/combine_distributions.js'
 import rank_turbulence_divergence from './src/rank_turbulence_divergence.js'
 import diamond_count from './src/diamond_count.js'
+import alpha_norm_type2 from './src/alpha_norm_type2.js'
 
 import { rin, matlab_sort, tiedrank, which, rank_maxlog10, zeros, balanceDat, wordShift_dat } from './src/utils_helpers.js'
 
@@ -11,6 +12,7 @@ export{
   rin,
   tiedrank,
   combElems, 
+  alpha_norm_type2,
   rank_turbulence_divergence, 
   diamond_count, 
   wordShift_dat, 
