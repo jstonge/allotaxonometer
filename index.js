@@ -1,17 +1,49 @@
-import { combElems, RTD, myDiamond, wordShift_dat, balanceDat } from './src/combine_distributions.js'
+import { combElems, myDiamond, wordShift_dat, balanceDat } from './src/combine_distributions.js'
+import { descending } from "d3-array";
 import rank_turbulence_divergence from './src/rank_turbulence_divergence.js'
-import DiamondChart from './src/diamond_plot.js'
-import WordShiftChart from './src/wordshift_plot.js'
-import LegendChart from './src/legend_plot.js'
-import BalanceChart from './src/balance_plot.js'
-import { rin, matlab_sort, tiedrank, which, rank_maxlog10, zeros } from './src/utils_helpers.js'
+import diamond from './diamond_count.js'
+import { getUnions, setdiff, rin, matlab_sort, tiedrank, which, rank_maxlog10, zeros } from './src/utils_helpers.js'
+import rank_turbulence_divergence from "./rank_turbulence_divergence.js";
+
+
+function RTD(me, alpha) { return rank_turbulence_divergence(me, alpha) }
+
+// the wordshift argument is a metric like rank_turbulence_divergence  
+function myDiamond(me, wordshift) { return diamond(me, wordshift) }
+
+function balanceDat(elem1, elem2) {
+  const types_1 = elem1.map(d => d.types)
+  const types_2 = elem2.map(d => d.types)
+  
+  const union_types = getUnions(types_1, types_2)
+  const tot_types = types_1.length+types_2.length
+  
+  return [ 
+    { y_coord: "total count",     frequency: +(types_2.length / tot_types).toFixed(3) },
+    { y_coord: "total count",     frequency: -(types_1.length / tot_types).toFixed(3) },
+    { y_coord: "all names",       frequency: +(types_2.length / union_types.size).toFixed(3) },
+    { y_coord: "all names",       frequency: -(types_1.length / union_types.size).toFixed(3) },
+    { y_coord: "exclusive names", frequency: +(setdiff(types_2, types_1).size / types_2.length).toFixed(3) },
+    { y_coord: "exclusive names", frequency: -(setdiff(types_1, types_2).size / types_1.length).toFixed(3) } 
+  ]
+}
+   
+function wordShift_dat(me, dat) { 
+  const out = []
+  for (let i=0; i < me[0]['types'].length; i++) {
+    const rank_diff = me[0]['ranks'][i]-me[1]['ranks'][i]
+    out.push({
+      'type': `${me[0]['types'][i]} (${me[0]['ranks'][i]} ⇋ ${me[1]['ranks'][i]})` ,
+      'rank_diff': rank_diff,
+      'metric': rank_diff < 0 ? -dat.deltas[i] : dat.deltas[i], 
+    })
+  }
+  
+  return out.slice().sort((a, b) => descending(Math.abs(a.metric), Math.abs(b.metric)))
+}
+
 
 export{
-  DiamondChart,
-  WordShiftChart,
-  BalanceChart,
-  LegendChart,
-  rank_turbulence_divergence,
   rank_maxlog10,
   matlab_sort,
   which,

@@ -1,4 +1,20 @@
-export { matlab_sort, rin, rank_maxlog10, tiedrank, which, zeros } ;
+export { matlab_sort, rin, rank_maxlog10, tiedrank, which, zeros, getUnions, setdiff } ;
+
+  // Takes arrays, returns a Set object containing the union of both arrays
+   function getUnions(x,y) {
+    let a = new Set(x); // convert array x to a Set object
+    let b = new Set(y); // convert array y to a Set object
+    return new Set([...a, ...b]); // return a new Set object containing the union of a and b
+  }
+  
+  // Takes arrays, returns a Set object
+  function setdiff(x,y) {
+    let a = new Set(x); // convert array x to a Set object
+    let b = new Set(y); // convert array y to a Set object
+    // return a new Set object containing elements in a that are not present in b
+    return new Set(       
+      [...a].filter(x => !b.has(x)));
+  } 
 
 function which(x) {
   // Which indices are TRUE?
